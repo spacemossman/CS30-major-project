@@ -6,7 +6,7 @@
  the horror elemnt comes in with a taking of a pill and the scenery changes to something very gross with blood and guts everywhere. 
  WHen this happens the descirption of objects changes as well as possible items that could be picked up.  
  
-##must have list
+## must have list
 - when something is clicked, a short descirption is made on the bottom of the screen
 - objects can be picked up and viewed in the inverntory
 - objects can then be combined, viewed and used in the inventory
