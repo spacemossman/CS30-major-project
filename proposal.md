@@ -10,7 +10,7 @@
 - when something is clicked, a short descirption is made on the bottom of the screen
 - objects can be picked up and viewed in the inverntory
 - objects can then be combined, viewed and used in the inventory
-- three separte rooms to explore 
+- sound and ambiance 
 - two npcs to talk to (a nurse and a kid)
 - change in scenery and object descirptions when pill is taken
 - small puzzle to get out of the third room by exploring and talking to npcs
@@ -19,6 +19,5 @@
 - a cutscne at the beginning of the game
   - gives story at the beginning of whats going on
 - a loading/menu screen
-- four rooms to explore with two windows to look through
-- sound and ambiance 
+- three separte rooms to explore
 - different descirptions if an object is clicked more than once
