@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
+let invisbleGrid; 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -20,4 +20,8 @@ class Display{
     this.x = x;
     this.y = y; 
   }
+}
+
+function createEmptyArray(){
+   
 }
