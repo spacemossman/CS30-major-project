@@ -47,5 +47,5 @@ function createEmptyArray(rows, cols){
 }
 
 function mousePressed(){
-  
+
 }
