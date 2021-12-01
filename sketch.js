@@ -7,10 +7,11 @@
 
 let invisbleGrid; 
 let gridSize  = 30;
-let levelOneRoom;
+let levelOneRoom, pillBottle;
 
 function preload(){
   levelOneRoom = loadImage("assets/franbow'sroom.jpg");
+  pillBottle = loadImage("assets/nobackgroundDrugs.jpg");
 }
 
 function setup() {
@@ -21,6 +22,7 @@ function setup() {
 function draw() {
   displayGrid();
   image(levelOneRoom, 0, 0, windowWidth, windowHeight);
+  image(pillBottle, 0, 0);
 }
 
 function displayGrid(){
@@ -47,5 +49,7 @@ function createEmptyArray(rows, cols){
 }
 
 function mousePressed(){
-
+  // let cellX  = Math.floor(mouseX/cellWidth);
+  // let cellY = Math.floor(mouseY/cellHeight);
+  
 }
