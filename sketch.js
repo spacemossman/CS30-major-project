@@ -22,7 +22,7 @@ function setup() {
 function draw() {
   displayGrid();
   image(levelOneRoom, 0, 0, windowWidth, windowHeight);
-  image(pillBottle, 0, 0);
+  //image(pillBottle, 0, 0);
 }
 
 function displayGrid(){
