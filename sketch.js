@@ -5,8 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let invisbleGrid; 
-let gridSize  = 30;
+
 let levelOneRoom, pillBottle;
 
 function preload(){
@@ -16,37 +15,29 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  invisbleGrid = createEmptyArray(gridSize, gridSize);
 }
 
 function draw() {
-  displayGrid();
   image(levelOneRoom, 0, 0, windowWidth, windowHeight);
   //image(pillBottle, 0, 0);
 }
 
-function displayGrid(){
-  let cellWidth = width/gridSize;
-  let cellHeight = height/gridSize;
+class Duotine{
+  constructor( x, y){
+    this.x = x;
+    this.y = y;
+    this.size = 30; 
+    this.clicked = false;
+  }
+  display(){
+    image(pillBottle, this.x, this.y);
+  }
 
-  for (let y = 0; y<gridSize; y++){
-    for(let x =0; x<gridSize; x++){
-      rect(x*cellWidth, y * cellHeight, cellWidth, cellHeight);
-    }
+  isItCLicked(){
   }
 }
 
-function createEmptyArray(rows, cols){
-  let grid = [];
-  
-  for (let y = 0; y<rows; y++){
-    grid.push([]);
-    for(let x = 0; x<cols; x++){
-      grid[y].push(0); 
-    }
-  }
-  return grid;
-}
+
 
 function mousePressed(){
   // let cellX  = Math.floor(mouseX/cellWidth);
