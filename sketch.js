@@ -7,6 +7,7 @@
 
 
 let levelOneRoom, pillBottle;
+let picturesF;
 
 function preload(){
   levelOneRoom = loadImage("assets/franbow'sroom.jpg");
@@ -15,25 +16,31 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  picturesF = new Duotine( 1450, 650, mouseX, mouseY);
 }
 
 function draw() {
   image(levelOneRoom, 0, 0, windowWidth, windowHeight);
-  //image(pillBottle, 0, 0);
+  picturesF.display();
 }
 
 class Duotine{
-  constructor( x, y){
+  constructor( x, y, dx, dy){
     this.x = x;
     this.y = y;
     this.size = 30; 
     this.clicked = false;
+    this.whereMouseIsX = dx;
+    this.whereMouseIsY = dy;
   }
   display(){
     image(pillBottle, this.x, this.y);
   }
 
   isItCLicked(){
+    if(this.whereMouseIsX === 5){
+      this.clicked = true;
+    }                                     
   }
 }
 
@@ -42,5 +49,5 @@ class Duotine{
 function mousePressed(){
   // let cellX  = Math.floor(mouseX/cellWidth);
   // let cellY = Math.floor(mouseY/cellHeight);
-  
+  picturesF.isItCLicked();
 }
