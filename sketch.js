@@ -8,11 +8,13 @@
 
 let levelOneRoom, levelTwoRoom, pillBottle;
 let picturesF, theBackground;
+let pillHit = false;
+let toyHit = false;
 
 function preload(){
   levelOneRoom = loadImage("assets/franbow'sroom.jpg");
   pillBottle = loadImage("assets/nobackgroundDrugs.jpg");
-  // levelTwoRoom = loadImage("assets/")
+  levelTwoRoom = loadImage("assets/deadroom.jpg");
 }
 
 function setup() {
@@ -24,6 +26,10 @@ function setup() {
 function draw() {
   theBackground.display();
   picturesF.display();
+
+
+  pillHit = collidePointRect(mouseX, mouseY, picturesF.x, picturesF.y, 108, 130);
+  toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
 }
 class Background{
   constructor(){
@@ -36,7 +42,7 @@ class Background{
       image(levelOneRoom, 0, 0, this.y, this.x);
     }
     else if(picturesF.clicked === true){
-      //yuh
+      image(levelTwoRoom, 0, 0, this.y, this.x);
     }
   }
 }
@@ -51,15 +57,17 @@ class Duotine{
     this.whereMouseIsY = dy;
   }
   display(){
-    rect(this.x,  this.y, 108, 130);
+    rect(440, 540, 75, 150);
+    // rect()
     image(pillBottle, this.x, this.y);
   }
 
   isItCLicked(){
-    if(dist(this.x, this.y, 108, 130)> this.whereMouseIsX){
-      this.clicked = true;
+    if(pillHit === true){
+      this.clicked = !this.clicked;
     }                                     
   }
+
 }
 
 
