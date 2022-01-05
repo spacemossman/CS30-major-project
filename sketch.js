@@ -4,23 +4,27 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-
-
 let levelOneRoom, levelTwoRoom, pillBottle;
+let backgroundMusic;
 let picturesF, theBackground;
 let pillHit = false;
 let toyHit = false;
 
 function preload(){
+  soundFormats("mp3");
+  
+  
   levelOneRoom = loadImage("assets/franbow'sroom.jpg");
   pillBottle = loadImage("assets/nobackgroundDrugs.jpg");
   levelTwoRoom = loadImage("assets/deadroom.jpg");
+  backgroundMusic = loadSound("assets/Finding the Truth.mp3");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   picturesF = new Duotine( 1450, 650, mouseX, mouseY);
   theBackground = new Background();
+  backgroundMusic.play();
 }
 
 function draw() {
