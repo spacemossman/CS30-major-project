@@ -22,7 +22,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  picturesF = new Duotine( 1450, 650, mouseX, mouseY);
+  picturesF = new Objects( 1450, 650, mouseX, mouseY);
   theBackground = new Background();
   backgroundMusic.play();
 }
@@ -52,7 +52,7 @@ class Background{
 }
 
 
-class Duotine{
+class Objects{
   constructor( x, y, dx, dy){
     this.x = x;
     this.y = y;
@@ -69,7 +69,11 @@ class Duotine{
   isItCLicked(){
     if(pillHit === true){
       this.clicked = !this.clicked;
-    }                                     
+    }
+    
+    if(toyHit === true){
+      
+    }
   }
 
 }
