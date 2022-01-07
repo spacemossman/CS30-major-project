@@ -7,6 +7,8 @@
 
 //pictures and sound
 let levelOneRoom, levelTwoRoom;
+let window1, window2;
+let clipboard1, clipboard2, papers1, papers2;
 let backgroundMusicLvl1, backgroungMusicLvl2;
 let circusMusic1, circusMusic2;
 let theObjects, theBackground;
@@ -26,12 +28,21 @@ let cabinetHit = false;
 let windowHit = false;
 let drapesHit = false;
 let purseHit = false;
+let eyeHit = false;
 
 function preload(){
   
+  //s
+  window1 = loadImage("assets/window1.png");
+  window2 = loadImage("assets/window2.png");
+  clipboard1 = loadImage("assets/clipboard1.png");
+  clipboard2 = loadImage("assets/clipboard2.png");
+  papers1 = loadImage("assets/papers1.png");
+  papers2 = loadImage("assets/papers2.png");
   
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
+
   backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
   circusMusic1 = loadSound("assets/Children's March Theme.mp3");
   circusMusic2 = loadSound("assets/marionettes.mp3");
@@ -46,6 +57,7 @@ function setup() {
 
 function draw() {
   theBackground.display();
+  theObjects.display();
 
 
   // where every item is, and if it is clikced or not
@@ -60,6 +72,7 @@ function draw() {
   windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
   drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
   purseHit = collidePointRect(mouseX, mouseY, 20, 650, 160, 120);
+  eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
 
 }
 
@@ -68,9 +81,12 @@ class Background{
   constructor(){
     this.x = windowHeight;
     this.y = windowWidth;
+    this.displayWindow1 = false;
+    this.displayWindow2 = false;
   }
 
   display(){
+
     if(theObjects.clicked === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
       // backgroundMusicLvl1.play();
@@ -80,6 +96,35 @@ class Background{
       image(levelTwoRoom, 0, 0, this.y, this.x);
       // backgroundMusicLvl1.stop(); 
       lvl1OrLvl2 = 2; 
+    }
+   
+   
+    if(this.displayWindow1 === true){
+      image(window1, 0, 0, this.y, this.x );
+    }
+    else if(this.displayWindow2 === true){
+      image(window2, 0, 0, this.y, this.x);
+    }
+
+  }
+
+
+  isItCLicked(){
+    if(lvl1OrLvl2 === 1){
+      if(windowHit === true){
+        this.displayWindow1 = true;
+        if(eyeHit === true){
+          this.displayWindow1 = false;
+        }
+      }
+    }
+    else if(lvl1OrLvl2 === 2){
+      if(windowHit === true){
+        this.displayWindow2 = true;
+        if(eyeHit === true){
+          this.displayWindow1 = false;
+        }
+      }
     }
   }
 }
@@ -92,6 +137,9 @@ class Objects{
     this.clicked = false;
     this.whereMouseIsX = dx;
     this.whereMouseIsY = dy;
+  }
+  display(){
+    circle(70, 370, 70);
   }
 
   isItCLicked(){
@@ -121,4 +169,5 @@ class Objects{
 
 function mousePressed(){
   theObjects.isItCLicked();
+  theBackground.isItCLicked();
 }
