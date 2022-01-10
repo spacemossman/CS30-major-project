@@ -52,7 +52,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   theObjects = new Objects( 1450, 650, mouseX, mouseY);
   theBackground = new Background();
-  //backgroundMusic.play();
 }
 
 function draw() {
@@ -83,28 +82,29 @@ class Background{
     this.y = windowWidth;
     this.displayWindow1 = false;
     this.displayWindow2 = false;
+    this.displayPapers1 = false;
   }
 
   display(){
 
-    if(theObjects.clicked === false){
+    if(theObjects.clicked === false && this.displayWindow1 === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
       // backgroundMusicLvl1.play();
       lvl1OrLvl2 = 1;
     }
-    else if(theObjects.clicked === true){
+    else if(theObjects.clicked === true && this.displayWindow2 === false){
       image(levelTwoRoom, 0, 0, this.y, this.x);
-      // backgroundMusicLvl1.stop(); 
+      
       lvl1OrLvl2 = 2; 
     }
-   
-   
-    if(this.displayWindow1 === true){
+    else if(this.displayWindow1 === true){
       image(window1, 0, 0, this.y, this.x );
     }
     else if(this.displayWindow2 === true){
       image(window2, 0, 0, this.y, this.x);
     }
+   
+
 
   }
 
@@ -113,16 +113,18 @@ class Background{
     if(lvl1OrLvl2 === 1){
       if(windowHit === true){
         this.displayWindow1 = true;
-        if(eyeHit === true){
-          this.displayWindow1 = false;
-        }
+        console.log("here");
+      }
+      if(eyeHit === true && this.displayWindow1 === true){
+        this.displayWindow1 = false;
+        console.log("here too!");
       }
     }
     else if(lvl1OrLvl2 === 2){
       if(windowHit === true){
         this.displayWindow2 = true;
         if(eyeHit === true){
-          this.displayWindow1 = false;
+          this.displayWindow2 = false;
         }
       }
     }
@@ -140,6 +142,7 @@ class Objects{
   }
   display(){
     circle(70, 370, 70);
+    point(mouseX, mouseY);
   }
 
   isItCLicked(){
