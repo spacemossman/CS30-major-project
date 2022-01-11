@@ -50,7 +50,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  theObjects = new Objects( 1450, 650, mouseX, mouseY);
+  theObjects = new Objects();
   theBackground = new Background();
 }
 
@@ -61,18 +61,20 @@ function draw() {
 
   // where every item is, and if it is clikced or not
   pillHit = collidePointRect(mouseX, mouseY, 1440, 630, 120, 140);
+  papersHit = collidePointRect(mouseX, mouseY, 1150, 260, 100, 100);
+  clipboardHit = collidePointRect(mouseX, mouseY, 750, 240, 50, 100);
+  windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
+  eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
+
+
+ 
   toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
   bedHit = collidePointRect(mouseX, mouseY, 900, 300, 245, 245);
   crossHit  = collidePointRect(mouseX, mouseY, 940, 150, 100, 100);
-  papersHit = collidePointRect(mouseX, mouseY, 1150, 260, 100, 100);
-  clipboardHit = collidePointRect(mouseX, mouseY, 750, 240, 50, 100);
   clownHit = collidePointRect(mouseX, mouseY, 580, 160, 110, 130);
   cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
-  windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
   drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
   purseHit = collidePointRect(mouseX, mouseY, 20, 650, 160, 120);
-  eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
-
 }
 
 
@@ -83,6 +85,9 @@ class Background{
     this.displayWindow1 = false;
     this.displayWindow2 = false;
     this.displayPapers1 = false;
+    this.displayPapers2 = false;
+    this.displayClipboard1 = false;
+    this.displayClipboard2 = false;
   }
 
   display(){
@@ -103,8 +108,18 @@ class Background{
     else if(this.displayWindow2 === true){
       image(window2, 0, 0, this.y, this.x);
     }
-   
-
+    if(this.displayPapers1 === true){
+      image(papers1, 0, 0, this.y, this.x);
+    }
+    else if (this.displayPapers2 === true){
+      image(papers2, 0, 0, this.y, this.x);
+    }
+    else if(this.displayClipboard1 === true){
+      image(clipboard1, 0, 0, this.y, this.x);
+    }
+    else if(this.displayClipboard2 === true){
+      image(clipboard2, 0, 0, this.y, this.x);
+    }
 
   }
 
@@ -113,19 +128,41 @@ class Background{
     if(lvl1OrLvl2 === 1){
       if(windowHit === true){
         this.displayWindow1 = true;
-        console.log("here");
       }
-      if(eyeHit === true && this.displayWindow1 === true){
+      else if(papersHit === true){
+        this.displayPapers1 = true;
+        console.log("ayup");
+      }
+      else if(clipboardHit === true){
+        this.displayClipboard1 = true;
+      }
+      if(eyeHit === true && 
+        (this.displayWindow1 === true || this.displayPapers1 === true || this.displayClipboard1 === true)){
+
         this.displayWindow1 = false;
-        console.log("here too!");
+        this.displayPapers1 = false;
+        this.displayClipboard1 = false;
+
       }
     }
     else if(lvl1OrLvl2 === 2){
       if(windowHit === true){
         this.displayWindow2 = true;
-        if(eyeHit === true){
-          this.displayWindow2 = false;
-        }
+      }    
+      else if(papersHit === true){
+        this.displayPapers2 = true;
+        console.log("ayo");
+      }
+      else if(clipboardHit === true){
+        this.displayClipboard2 = true;
+      }
+      if(eyeHit === true && (
+        this.displayWindow2 === true || this.displayPapers2 === true || this.displayClipboard2 === true )){
+
+        this.displayWindow2 = false;
+        this.displayPapers2 = false;
+        this.displayClipboard2 = false;
+
       }
     }
   }
@@ -133,12 +170,18 @@ class Background{
 
 
 class Objects{
-  constructor( x, y, dx, dy){
-    this.x = x;
-    this.y = y;
+  constructor(){
     this.clicked = false;
-    this.whereMouseIsX = dx;
-    this.whereMouseIsY = dy;
+    this.papersText = false;
+    this.clipboardText = false;
+    this.windowText = false;
+    this.toyText = false;
+    this.bedText = false;
+    this.crossText = false;
+    this.clownText = false;
+    this.cabinetText = false;
+    this.drapesText = false;
+    this.purseText = false;
   }
   display(){
     circle(70, 370, 70);
@@ -153,7 +196,27 @@ class Objects{
     if(lvl1OrLvl2 === 1){
       if(toyHit === true){
         circusMusic1.play();
+        this.toyText = true;
       }
+      else if (bedHit === true){
+        this.bedText = true;
+      }
+      else if (crossHit === true){
+        this.crossText = true;
+      }
+      else if (clownHit === true){
+        this.clownText = true;
+      }
+      else if (cabinetHit === true){
+        this.cabinetText = true;
+      }
+      else if (drapesHit === true){
+        this.drapesText = true;
+      }
+      else if (purseHit === true){
+        this.purseText = true;
+      }
+
     }
     else if(lvl1OrLvl2 === 2){
       if(toyHit === true){
