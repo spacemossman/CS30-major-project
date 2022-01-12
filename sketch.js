@@ -56,6 +56,7 @@ function setup() {
 
 function draw() {
   theBackground.display();
+  theObjects.descriptions();
   theObjects.display();
 
 
@@ -172,19 +173,35 @@ class Background{
 class Objects{
   constructor(){
     this.clicked = false;
-    this.papersText = false;
-    this.clipboardText = false;
-    this.windowText = false;
-    this.toyText = false;
-    this.bedText = false;
-    this.crossText = false;
-    this.clownText = false;
-    this.cabinetText = false;
-    this.drapesText = false;
-    this.purseText = false;
+
+    this.whateverText = " ";
+
+    this.papersText1 = false;
+    this.clipboardText1 = false;
+    this.windowText1 = false;
+    this.toyText1 = false;
+    this.bedText1 = false;
+    this.crossText1 = false;
+    this.clownText1 = false;
+    this.cabinetText1 = false;
+    this.drapesText1 = false;
+    this.purseText1 = false;
+
+
+    this.papersText2 = false;
+    this.clipboardText2 = false;
+    this.windowText2 = false;
+    this.toyText2 = false;
+    this.bedText2 = false;
+    this.crossText2 = false;
+    this.clownText2 = false;
+    this.cabinetText2 = false;
+    this.drapesText2 = false;
+    this.purseText2 = false;
   }
   display(){
-    circle(70, 370, 70);
+    fill("black");
+    circle(1510, 370, 80);
     point(mouseX, mouseY);
   }
 
@@ -196,25 +213,34 @@ class Objects{
     if(lvl1OrLvl2 === 1){
       if(toyHit === true){
         circusMusic1.play();
-        this.toyText = true;
+        this.toyText1 = true;
       }
       else if (bedHit === true){
-        this.bedText = true;
+        this.bedText1 = true;
       }
       else if (crossHit === true){
-        this.crossText = true;
+        this.crossText1 = true;
       }
       else if (clownHit === true){
-        this.clownText = true;
+        this.clownText1 = true;
       }
       else if (cabinetHit === true){
-        this.cabinetText = true;
+        this.cabinetText1 = true;
       }
       else if (drapesHit === true){
-        this.drapesText = true;
+        this.drapesText1 = true;
       }
       else if (purseHit === true){
-        this.purseText = true;
+        this.purseText1 = true;
+      }
+      else if(papersHit === true){
+        this.papersText1 = true;
+      }
+      else if(clipboardHit === true){
+        this.clipboardText1 = true;
+      }
+      else if(windowHit === true){
+        this.windowText1 = true;
       }
 
     }
@@ -222,12 +248,70 @@ class Objects{
       if(toyHit === true){
         circusMusic2.play();
       }
+
+      else if (bedHit === true){
+        this.bedText2 = true;
+      }
+      else if (crossHit === true){
+        this.crossText2 = true;
+      }
+      else if (clownHit === true){
+        this.clownText2 = true;
+      }
+      else if (cabinetHit === true){
+        this.cabinetText2 = true;
+      }
+      else if (drapesHit === true){
+        this.drapesText2 = true;
+      }
+      else if (purseHit === true){
+        this.purseText2 = true;
+      }
+      else if(papersHit === true){
+        this.papersText2 = true;
+      }
+      else if(clipboardHit === true){
+        this.clipboardText2 = true;
+      }
+      else if(windowHit === true){
+        this.windowText2 = true;
+      }
     }
   }
 
 
   descriptions(){
-    
+    fill("white");
+    textSize(24);
+    textFont("Gerogia")
+    textAlign("center");
+    text(this.whateverText, 500, 750);
+
+
+    if(this.papersText1 === true){
+      this.whateverText = "Red and tiny, you are hiding from me."
+    }
+    if(this.papersText2 === true){
+      this.whateverText = "I hate the monster!"
+    }
+    if(this.clipboardText1 === true){
+      this.whateverText = "Psycho- what? I'm definitely not that for sure!"
+    }
+    if(this.clipboardText2 === true){
+      this.whateverText = "Who did what?"
+    }
+    if(this.windowText1 === true){
+      this.whateverText = "It's not time to play outside"
+    }
+    if(this.windowText2 === true){
+      this.whateverText = "That's my head! why do you have my head?"
+    }
+    if(this.toyText1 === true){
+      this.whateverText = "what a delightful tune!"
+    }
+    if(this.toyText2 === true){
+      this.whateverText = "kadjfk;ljd"
+    }
   }
 }
 
