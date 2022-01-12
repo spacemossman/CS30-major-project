@@ -11,9 +11,8 @@
 - objects can be picked up and viewed in the inverntory
 - objects can then be combined, viewed and used in the inventory
 - sound and ambiance 
-- two npcs to talk to (a nurse and a kid)
 - change in scenery and object descirptions when pill is taken
-- small puzzle to get out of the third room by exploring and talking to npcs
+- small puzzle to get out of the room by exploring 
 
 ## nice to have list
 - a cutscne at the beginning of the game
@@ -21,3 +20,4 @@
 - a loading/menu screen
 - three separte rooms to explore
 - different descirptions if an object is clicked more than once
+- two npcs to talk to (a nurse and a kid)

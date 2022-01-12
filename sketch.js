@@ -12,6 +12,9 @@ let clipboard1, clipboard2, papers1, papers2;
 let backgroundMusicLvl1, backgroungMusicLvl2;
 let circusMusic1, circusMusic2;
 let theObjects, theBackground;
+ 
+//each different class
+let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse;
 
 //state varible between spooky room and noraml room
 let lvl1OrLvl2; 
@@ -50,14 +53,34 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  theObjects = new Objects();
+  toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
+  bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight!", "Hello Mr Fox! Are you having a nice nap?", false);
+  cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
+  papers = new Objects("papers", "Red and tiny you are hinding from me.", " I hate the monster!", false);
+  clipboard = new Objects("clipboard", "Psycho- what? I'm definitely not that for sure!", "Who did what? I'm so confused", false);
+  clown = new Objects("clown", "How are you Mr Clown?", "Where did you go Mr Clown?", false);
+  cabinet = new Objects("cabinet", "It's locked", "Thank goodness for extra keys!", false);
+  windowView = new Objects("window", "It's not time to play outside", "That's my head! why do you have my head?", false);
+  drapes = new Objects("drapes", "A handy Hook! maybe i can make a key out of this", "they  were like this when i found them", false);
+  purse = new Objects("purse", "the purse that my Aunt Grace Gave Me!", "Maybe i should try combining something", false);
   theBackground = new Background();
 }
 
 function draw() {
   theBackground.display();
-  theObjects.descriptions();
-  theObjects.display();
+  toy.descriptions();
+  bed.descriptions();
+  cross.descriptions();
+  papers.descriptions();
+  clipboard.descriptions();
+  clown.descriptions();
+  cabinet.descriptions();
+  windowView.descriptions();
+  drapes.descriptions();
+  purse.descriptions();
+
+  toy.display();
+  
 
 
   // where every item is, and if it is clikced or not
@@ -93,12 +116,12 @@ class Background{
 
   display(){
 
-    if(theObjects.clicked === false && this.displayWindow1 === false){
+    if(toy.clicked === false && this.displayWindow1 === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
       // backgroundMusicLvl1.play();
       lvl1OrLvl2 = 1;
     }
-    else if(theObjects.clicked === true && this.displayWindow2 === false){
+    else if(toy.clicked === true && this.displayWindow2 === false){
       image(levelTwoRoom, 0, 0, this.y, this.x);
       
       lvl1OrLvl2 = 2; 
@@ -171,33 +194,16 @@ class Background{
 
 
 class Objects{
-  constructor(){
+  constructor(whatObject, whatText1, whatText2, displayText){
     this.clicked = false;
 
     this.whateverText = " ";
 
-    this.papersText1 = false;
-    this.clipboardText1 = false;
-    this.windowText1 = false;
-    this.toyText1 = false;
-    this.bedText1 = false;
-    this.crossText1 = false;
-    this.clownText1 = false;
-    this.cabinetText1 = false;
-    this.drapesText1 = false;
-    this.purseText1 = false;
+    this.whatObject = whatObject;
+    this.whatToSay1 = whatText1;
+    this.whatToSay2 = whatText2;
 
-
-    this.papersText2 = false;
-    this.clipboardText2 = false;
-    this.windowText2 = false;
-    this.toyText2 = false;
-    this.bedText2 = false;
-    this.crossText2 = false;
-    this.clownText2 = false;
-    this.cabinetText2 = false;
-    this.drapesText2 = false;
-    this.purseText2 = false;
+    this.displayText = displayText;
   }
   display(){
     fill("black");
@@ -210,107 +216,54 @@ class Objects{
       this.clicked = !this.clicked;
     }
     
-    if(lvl1OrLvl2 === 1){
-      if(toyHit === true){
-        circusMusic1.play();
-        this.toyText1 = true;
-      }
-      else if (bedHit === true){
-        this.bedText1 = true;
-      }
-      else if (crossHit === true){
-        this.crossText1 = true;
-      }
-      else if (clownHit === true){
-        this.clownText1 = true;
-      }
-      else if (cabinetHit === true){
-        this.cabinetText1 = true;
-      }
-      else if (drapesHit === true){
-        this.drapesText1 = true;
-      }
-      else if (purseHit === true){
-        this.purseText1 = true;
-      }
-      else if(papersHit === true){
-        this.papersText1 = true;
-      }
-      else if(clipboardHit === true){
-        this.clipboardText1 = true;
-      }
-      else if(windowHit === true){
-        this.windowText1 = true;
-      }
-
+    if(toyHit === true && this.whatObject === "toy"){
+      this.displayText1 = true;
     }
-    else if(lvl1OrLvl2 === 2){
-      if(toyHit === true){
-        circusMusic2.play();
-      }
-
-      else if (bedHit === true){
-        this.bedText2 = true;
-      }
-      else if (crossHit === true){
-        this.crossText2 = true;
-      }
-      else if (clownHit === true){
-        this.clownText2 = true;
-      }
-      else if (cabinetHit === true){
-        this.cabinetText2 = true;
-      }
-      else if (drapesHit === true){
-        this.drapesText2 = true;
-      }
-      else if (purseHit === true){
-        this.purseText2 = true;
-      }
-      else if(papersHit === true){
-        this.papersText2 = true;
-      }
-      else if(clipboardHit === true){
-        this.clipboardText2 = true;
-      }
-      else if(windowHit === true){
-        this.windowText2 = true;
-      }
+    else if(bedHit === true && this.whatObject === "bed"){
+      this.displayText1 = true;
+    }
+    else if(crossHit === true && this.whatObject === "cross"){
+      this.displayText1 = true;
+    }
+    else if(papersHit === true && this.whatObject === "papers"){
+      this.displayText1 = true;
+    }
+    else if(clipboardHit === true && this.whatObject === "clipboard"){
+      this.displayText1 = true;
+    }
+    else if(clownHit === true && this.whatObject === "clown"){
+      this.displayText1 = true;
+    }
+    else if(cabinetHit === true && this.whatObject === "cabinet"){
+      this.displayText1 = true;
+    }
+    else if(windowHit === true && this.whatObject === "window"){
+      this.displayText1 = true;
+    }
+    else if(drapesHit === true && this.whatObject === "drapes"){
+      this.displayText1 = true;
+    }
+    else if(purseHit === true && this.whatObject === "purse"){
+      this.displayText1 = true;
     }
   }
 
 
   descriptions(){
-    fill("white");
-    textSize(24);
-    textFont("Gerogia")
-    textAlign("center");
-    text(this.whateverText, 500, 750);
+    if(this.displayText === true){
+      
+      if(lvl1OrLvl2 === 1){
+        this.whateverText = this.whatText1;
+      }
+      else if (lvl1OrLvl2 === 2){
+        this.whateverText = this.whatText2;
+      }
 
-
-    if(this.papersText1 === true){
-      this.whateverText = "Red and tiny, you are hiding from me."
-    }
-    if(this.papersText2 === true){
-      this.whateverText = "I hate the monster!"
-    }
-    if(this.clipboardText1 === true){
-      this.whateverText = "Psycho- what? I'm definitely not that for sure!"
-    }
-    if(this.clipboardText2 === true){
-      this.whateverText = "Who did what?"
-    }
-    if(this.windowText1 === true){
-      this.whateverText = "It's not time to play outside"
-    }
-    if(this.windowText2 === true){
-      this.whateverText = "That's my head! why do you have my head?"
-    }
-    if(this.toyText1 === true){
-      this.whateverText = "what a delightful tune!"
-    }
-    if(this.toyText2 === true){
-      this.whateverText = "kadjfk;ljd"
+      fill("white");
+      textSize(24);
+      textFont("Gerogia");
+      textAlign("center");
+      text(this.whateverText, 500, 750);
     }
   }
 }
@@ -318,6 +271,17 @@ class Objects{
 
 
 function mousePressed(){
-  theObjects.isItCLicked();
+  toy.isItCLicked();
+  bed.isItCLicked();
+  cross.isItCLicked();
+  papers.isItCLicked();
+  clipboard.isItCLicked();
+  clown.isItCLicked();
+  cabinet.isItCLicked();
+  windowView.isItCLicked();
+  drapes.isItCLicked();
+  purse.isItCLicked();
+
+
   theBackground.isItCLicked();
 }
