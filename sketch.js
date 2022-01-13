@@ -19,6 +19,8 @@ let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purs
 //state varible between spooky room and noraml room
 let lvl1OrLvl2; 
 
+let inventoryOpen = false;
+
 //availble objects to click
 let pillHit = false;
 let toyHit = false;
@@ -67,19 +69,28 @@ function setup() {
 }
 
 function draw() {
-  theBackground.display();
-  toy.descriptions();
-  bed.descriptions();
-  cross.descriptions();
-  papers.descriptions();
-  clipboard.descriptions();
-  clown.descriptions();
-  cabinet.descriptions();
-  windowView.descriptions();
-  drapes.descriptions();
-  purse.descriptions();
 
-  toy.display();
+  if(inventoryOpen === false){
+
+    inventory();
+
+    theBackground.display();
+    toy.descriptions();
+    bed.descriptions();
+    cross.descriptions();
+    papers.descriptions();
+    clipboard.descriptions();
+    clown.descriptions();
+    cabinet.descriptions();
+    windowView.descriptions();
+    drapes.descriptions();
+    purse.descriptions();
+  
+    toy.display();
+  }
+  else if(inventoryOpen === true){
+    inventory();
+  }
   
 
 
@@ -175,7 +186,6 @@ class Background{
       }    
       else if(papersHit === true){
         this.displayPapers2 = true;
-        console.log("ayo");
       }
       else if(clipboardHit === true){
         this.displayClipboard2 = true;
@@ -217,34 +227,40 @@ class Objects{
     }
     
     if(toyHit === true && this.whatObject === "toy"){
-      this.displayText1 = true;
+      this.displayText = true;
+      console.log("here");
     }
     else if(bedHit === true && this.whatObject === "bed"){
-      this.displayText1 = true;
+      this.displayText = true;
+      cross.displayText = false;
     }
     else if(crossHit === true && this.whatObject === "cross"){
-      this.displayText1 = true;
+      cross.displayText = true;
+      bed.displayText = false;
     }
     else if(papersHit === true && this.whatObject === "papers"){
-      this.displayText1 = true;
+      this.displayText = true;
     }
     else if(clipboardHit === true && this.whatObject === "clipboard"){
-      this.displayText1 = true;
+      this.displayText = true;
     }
     else if(clownHit === true && this.whatObject === "clown"){
-      this.displayText1 = true;
+      this.displayText = true;
     }
     else if(cabinetHit === true && this.whatObject === "cabinet"){
-      this.displayText1 = true;
+      this.displayText = true;
     }
     else if(windowHit === true && this.whatObject === "window"){
       this.displayText1 = true;
     }
     else if(drapesHit === true && this.whatObject === "drapes"){
-      this.displayText1 = true;
+      this.displayText = true;
     }
     else if(purseHit === true && this.whatObject === "purse"){
-      this.displayText1 = true;
+      this.displayText = true;
+    }
+    else{
+      this.displaytext = false;
     }
   }
 
@@ -253,10 +269,10 @@ class Objects{
     if(this.displayText === true){
       
       if(lvl1OrLvl2 === 1){
-        this.whateverText = this.whatText1;
+        this.whateverText = this.whatToSay1;
       }
       else if (lvl1OrLvl2 === 2){
-        this.whateverText = this.whatText2;
+        this.whateverText = this.whatToSay2;
       }
 
       fill("white");
@@ -266,6 +282,7 @@ class Objects{
       text(this.whateverText, 500, 750);
     }
   }
+  
 }
 
 
@@ -284,4 +301,13 @@ function mousePressed(){
 
 
   theBackground.isItCLicked();
+}
+
+function inventory(){
+  if(purseHit === true){
+    inventoryOpen = true;
+  }
+  if(inventoryOpen === true){
+  //display image of inventroy
+  }
 }
