@@ -21,6 +21,12 @@ let lvl1OrLvl2;
 
 let inventoryOpen = false;
 
+//sound
+let toySoundPLay1 = false;
+let toySoundPLay2  = false;
+let backgroundMusicPLay1  = false;
+let backgroundMusicPLay2 = false;
+
 //availble objects to click
 let pillHit = false;
 let toyHit = false;
@@ -48,7 +54,8 @@ function preload(){
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
 
-  backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
+  // backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
+  // backgroungMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
   circusMusic1 = loadSound("assets/Children's March Theme.mp3");
   circusMusic2 = loadSound("assets/marionettes.mp3");
 }
@@ -70,6 +77,8 @@ function setup() {
 
 function draw() {
 
+  sound();
+
   if(inventoryOpen === false){
 
     inventory();
@@ -90,25 +99,28 @@ function draw() {
   }
   else if(inventoryOpen === true){
     inventory();
+    purse.descriptions();
   }
   
 
 
   // where every item is, and if it is clikced or not
+  //background changes when clicked 
   pillHit = collidePointRect(mouseX, mouseY, 1440, 630, 120, 140);
   papersHit = collidePointRect(mouseX, mouseY, 1150, 260, 100, 100);
   clipboardHit = collidePointRect(mouseX, mouseY, 750, 240, 50, 100);
   windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
   eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
+  cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
 
-
- 
-  toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
+  //object is given when clicked 
+  drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
   bedHit = collidePointRect(mouseX, mouseY, 900, 300, 245, 245);
+
+  //text is only displayed 
+  toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
   crossHit  = collidePointRect(mouseX, mouseY, 940, 150, 100, 100);
   clownHit = collidePointRect(mouseX, mouseY, 580, 160, 110, 130);
-  cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
-  drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
   purseHit = collidePointRect(mouseX, mouseY, 20, 650, 160, 120);
 }
 
@@ -159,7 +171,7 @@ class Background{
   }
 
 
-  isItCLicked(){
+  isItCLickedBackgrounds(){
     if(lvl1OrLvl2 === 1){
       if(windowHit === true){
         this.displayWindow1 = true;
@@ -221,66 +233,37 @@ class Objects{
     point(mouseX, mouseY);
   }
 
-  isItCLicked(){
+  switchRoom(){
     if(pillHit === true){
       this.clicked = !this.clicked;
     }
     
-    if(toyHit === true && this.whatObject === "toy"){
-      this.displayText = true;
-      console.log("here");
-    }
-    else if(bedHit === true && this.whatObject === "bed"){
-      this.displayText = true;
-      cross.displayText = false;
-    }
-    else if(crossHit === true && this.whatObject === "cross"){
-      cross.displayText = true;
-      bed.displayText = false;
-    }
-    else if(papersHit === true && this.whatObject === "papers"){
-      this.displayText = true;
-    }
-    else if(clipboardHit === true && this.whatObject === "clipboard"){
-      this.displayText = true;
-    }
-    else if(clownHit === true && this.whatObject === "clown"){
-      this.displayText = true;
-    }
-    else if(cabinetHit === true && this.whatObject === "cabinet"){
-      this.displayText = true;
-    }
-    else if(windowHit === true && this.whatObject === "window"){
-      this.displayText1 = true;
-    }
-    else if(drapesHit === true && this.whatObject === "drapes"){
-      this.displayText = true;
-    }
-    else if(purseHit === true && this.whatObject === "purse"){
-      this.displayText = true;
-    }
-    else{
-      this.displaytext = false;
-    }
   }
-
-
+  
+  
   descriptions(){
-    if(this.displayText === true){
+    if(this.displayText === true ){
+
+      if (this.whatObject !== "purse" && this.whatObject !== "cabinet"){
       
-      if(lvl1OrLvl2 === 1){
+        if(lvl1OrLvl2 === 1){
+          this.whateverText = this.whatToSay1;
+        }
+        else if (lvl1OrLvl2 === 2){
+          this.whateverText = this.whatToSay2;
+        }
+      }
+
+      else if(this.whatObject === "purse" && this.whatObject === "cabinet"){
         this.whateverText = this.whatToSay1;
       }
-      else if (lvl1OrLvl2 === 2){
-        this.whateverText = this.whatToSay2;
-      }
-
       fill("white");
       textSize(24);
       textFont("Gerogia");
       textAlign("center");
       text(this.whateverText, 500, 750);
     }
+      
   }
   
 }
@@ -288,20 +271,192 @@ class Objects{
 
 
 function mousePressed(){
-  toy.isItCLicked();
-  bed.isItCLicked();
-  cross.isItCLicked();
-  papers.isItCLicked();
-  clipboard.isItCLicked();
-  clown.isItCLicked();
-  cabinet.isItCLicked();
-  windowView.isItCLicked();
-  drapes.isItCLicked();
-  purse.isItCLicked();
-
-
-  theBackground.isItCLicked();
+  isItCLicked();
+  
+  toy.switchRoom();
+  purse.switchRoom();
+  
+  theBackground.isItCLickedBackgrounds();
 }
+
+
+function isItCLicked(){
+  
+  if(toyHit === true){
+    toy.displayText = true;
+
+
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(bedHit === true){ // vareint
+    bed.displayText = true;
+
+    toy.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(crossHit === true){
+    cross.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(papersHit === true){
+    papers.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(clipboardHit === true){
+    clipboard.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(clownHit === true){
+    clown.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(cabinetHit === true){ //varient main obejct of the game trying to unlock
+    cabinet.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(windowHit === true){
+    window.displayText1 = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false;
+  }
+  else if(drapesHit === true){ // varient give hook once hook is given other text
+    drapes.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    purse.displayText = false;
+  }
+  else if(purseHit === true){ // inventory opens
+    purse.displayText = true;
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+  }
+}
+
+function sound(){
+
+  //detrimes which sound to play, making one true the rest false
+  if(lvl1OrLvl2 === 1 ){
+    // backgroundMusicPLay1 = true;
+    // backgroundMusicPLay2 = false;
+    toySoundPLay2 = false;
+    toySoundPLay1 = false;
+
+    if (toyHit  === true){
+      toySoundPLay1 = true;
+      toySoundPLay2  = false;
+      backgroundMusicPLay1 = false;
+      backgroundMusicPLay2 = false;
+
+    }
+
+  }
+  if(lvl1OrLvl2 === 2 ){
+    // backgroundMusicPLay2 = true;
+    // backgroundMusicPLay1 = false;
+    toySoundPLay2 = false;
+    toySoundPLay1 = false;
+
+    if (toyHit  === true){
+      toySoundPLay2 = true;
+      toySoundPLay1 = false;
+      backgroundMusicPLay1 = false;
+      backgroundMusicPLay2 = false;
+    }
+  }
+
+  //plays the sound
+  if(toySoundPLay1 === true){
+    circusMusic1.play();
+  }
+  else if(toySoundPLay2 === true){
+    circusMusic2.play();
+  }
+
+}
+
 
 function inventory(){
   if(purseHit === true){
