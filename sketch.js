@@ -8,6 +8,7 @@
 //pictures and sound
 let levelOneRoom, levelTwoRoom;
 let window1, window2;
+let openCabinet;
 let clipboard1, clipboard2, papers1, papers2;
 let backgroundMusicLvl1, backgroungMusicLvl2;
 let circusMusic1, circusMusic2;
@@ -50,6 +51,8 @@ function preload(){
   clipboard2 = loadImage("assets/clipboard2.png");
   papers1 = loadImage("assets/papers1.png");
   papers2 = loadImage("assets/papers2.png");
+  openCabinet = loadImage("assets/cabinetOpen.png");
+
   
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
@@ -135,6 +138,8 @@ class Background{
     this.displayPapers2 = false;
     this.displayClipboard1 = false;
     this.displayClipboard2 = false;
+
+    this.displayOpenCabinet = false;
   }
 
   display(){
@@ -166,6 +171,9 @@ class Background{
     }
     else if(this.displayClipboard2 === true){
       image(clipboard2, 0, 0, this.y, this.x);
+    }
+    else if (this.displayOpenCabinet){
+      image(openCabinet, 0, 0, this.displayOpenCabinet);
     }
 
   }
