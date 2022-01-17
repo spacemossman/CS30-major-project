@@ -8,7 +8,7 @@
 //pictures and sound
 let levelOneRoom, levelTwoRoom;
 let window1, window2;
-let openCabinet;
+let openCabinet, inventoryIMG;
 let clipboard1, clipboard2, papers1, papers2;
 let backgroundMusicLvl1, backgroungMusicLvl2;
 let circusMusic1, circusMusic2;
@@ -53,7 +53,8 @@ function preload(){
   papers2 = loadImage("assets/papers2.png");
   openCabinet = loadImage("assets/cabinetOpen.png");
 
-  
+  inventoryIMG = loadImage("assets/InventoryOpenHook.png");
+
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
 
@@ -80,28 +81,27 @@ function setup() {
 
 function draw() {
 
-  sound();
+  // inventory();
 
+  toy.switchRoom();
+
+  theBackground.display();
+
+  toy.descriptions();
+  bed.descriptions();
+  cross.descriptions();
+  papers.descriptions();
+  clipboard.descriptions();
+  clown.descriptions();
+  cabinet.descriptions();
+  windowView.descriptions();
+  drapes.descriptions();
+  purse.descriptions();
+
+  toy.display();
   if(inventoryOpen === false){
-
-    inventory();
-
-    theBackground.display();
-    toy.descriptions();
-    bed.descriptions();
-    cross.descriptions();
-    papers.descriptions();
-    clipboard.descriptions();
-    clown.descriptions();
-    cabinet.descriptions();
-    windowView.descriptions();
-    drapes.descriptions();
-    purse.descriptions();
-  
-    toy.display();
   }
   else if(inventoryOpen === true){
-    inventory();
     purse.descriptions();
   }
   
@@ -410,6 +410,7 @@ function isItCLicked(){
   }
   else if(purseHit === true){ // inventory opens
     purse.displayText = true;
+    // sinventoryOpen = true;
 
     toy.displayText = false;
     bed.displayText = false;
@@ -467,10 +468,9 @@ function sound(){
 
 
 function inventory(){
-  if(purseHit === true){
-    inventoryOpen = true;
-  }
   if(inventoryOpen === true){
-  //display image of inventroy
+    image(inventoryIMG, 0, 0, theBackground.y, theBackground.x);
+
+    rect(200, 600, 100, 100);
   }
 }
