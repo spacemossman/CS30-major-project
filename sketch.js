@@ -42,6 +42,10 @@ let drapesHit = false;
 let purseHit = false;
 let eyeHit = false;
 
+let useHit = false;
+let combineHit = false;
+let examineHit = false;
+
 function preload(){
   
   //s
@@ -53,7 +57,7 @@ function preload(){
   papers2 = loadImage("assets/papers2.png");
   openCabinet = loadImage("assets/cabinetOpen.png");
 
-  inventoryIMG = loadImage("assets/InventoryOpenHook.png");
+  inventoryIMG = loadImage("assets/emptyinventory.png");
 
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
@@ -65,7 +69,7 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1600, 789);
   toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
   bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight!", "Hello Mr Fox! Are you having a nice nap?", false);
   cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
@@ -83,26 +87,28 @@ function draw() {
 
   // inventory();
 
-  toy.switchRoom();
-
-  theBackground.display();
-
-  toy.descriptions();
-  bed.descriptions();
-  cross.descriptions();
-  papers.descriptions();
-  clipboard.descriptions();
-  clown.descriptions();
-  cabinet.descriptions();
-  windowView.descriptions();
-  drapes.descriptions();
-  purse.descriptions();
-
+  
   toy.display();
+
   if(inventoryOpen === false){
+  
+    theBackground.display();
+    inventory();
+  
+    toy.descriptions();
+    bed.descriptions();
+    cross.descriptions();
+    papers.descriptions();
+    clipboard.descriptions();
+    clown.descriptions();
+    cabinet.descriptions();
+    windowView.descriptions();
+    drapes.descriptions();
+    purse.descriptions();
   }
   else if(inventoryOpen === true){
     purse.descriptions();
+    inventory();
   }
   
 
@@ -130,8 +136,8 @@ function draw() {
 
 class Background{
   constructor(){
-    this.x = windowHeight;
-    this.y = windowWidth;
+    this.x = height;
+    this.y = width;
     this.displayWindow1 = false;
     this.displayWindow2 = false;
     this.displayPapers1 = false;
@@ -143,6 +149,7 @@ class Background{
   }
 
   display(){
+
 
     if(toy.clicked === false && this.displayWindow1 === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
@@ -280,6 +287,10 @@ class Objects{
 
 function mousePressed(){
   isItCLicked();
+  
+  if(purseHit === true){
+    inventoryOpen = !inventoryOpen;
+  }
   
   toy.switchRoom();
   purse.switchRoom();
@@ -471,6 +482,9 @@ function inventory(){
   if(inventoryOpen === true){
     image(inventoryIMG, 0, 0, theBackground.y, theBackground.x);
 
-    rect(200, 600, 100, 100);
+    useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
+    combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
+    examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
+    
   }
 }
