@@ -21,6 +21,9 @@ let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purs
 let lvl1OrLvl2; 
 
 let inventoryOpen = false;
+let use = false;
+let combine  = false;
+let examine = false;
 
 //sound
 let toySoundPLay1 = false;
@@ -394,7 +397,7 @@ function isItCLicked(){
     purse.displayText = false;
   }
   else if(windowHit === true){
-    window.displayText1 = true;
+    window.displayText = true;
 
     toy.displayText = false;
     bed.displayText = false;
@@ -485,6 +488,46 @@ function inventory(){
     useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
     combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
     examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
-    
+
+
+    if (mouseIsPressed){     
+      if(useHit === true){
+        use  = true;
+      }
+      else if (combineHit === true){
+        combine = true;
+      }
+      else if (examineHit === true){
+        examine = true;
+      }
+    }
+
+
+
+    if (use === true){
+      
+      fill("white");
+      textSize(24);
+      textFont("Gerogia");
+      textAlign("center");
+      text("Pick an object to use", 500, 750);
+      console.log("here");
+    }
+    else if (combine === true){
+      fill("white");
+      textSize(24);
+      textFont("Gerogia");
+      textAlign("center");
+      text("Pick two objects to combine", 500, 750);
+      console.log("here");
+    }
+    else if (examine === true){
+      fill("white");
+      textSize(24);
+      textFont("Gerogia");
+      textAlign("center");
+      text("Pick an object to examine", 500, 750);
+      console.log("here");
+    }
   }
 }
