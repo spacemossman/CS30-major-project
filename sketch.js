@@ -9,6 +9,7 @@
 let levelOneRoom, levelTwoRoom;
 let window1, window2;
 let openCabinet, inventoryIMG;
+let hookInventory, pinAndHookInventory, keyInventory, pinANdHookAndNeedleInventory;
 let clipboard1, clipboard2, papers1, papers2;
 let backgroundMusicLvl1, backgroungMusicLvl2;
 let circusMusic1, circusMusic2;
@@ -20,16 +21,23 @@ let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purs
 //state varible between spooky room and noraml room
 let lvl1OrLvl2; 
 
-let inventoryOpen = false;
+//things you can do in the inventory
+let inventoryOpen = true;
 let use = false;
 let combine  = false;
 let examine = false;
+let keyMade = false;
 
-//sound
-let toySoundPLay1 = false;
-let toySoundPLay2  = false;
-let backgroundMusicPLay1  = false;
-let backgroundMusicPLay2 = false;
+//things in the inventory
+let hasPin = true;
+let hasHook = true;
+let hasNeedle = false;
+
+let pinHit  = false;
+let hookHit = false;
+let needleHit = false;
+let keyHit = false;
+
 
 //availble objects to click
 let pillHit = false;
@@ -61,6 +69,10 @@ function preload(){
   openCabinet = loadImage("assets/cabinetOpen.png");
 
   inventoryIMG = loadImage("assets/emptyinventory.png");
+  hookInventory = loadImage("assets/inventoryOpenHook.png");
+  pinAndHookInventory = loadImage("assets/hairpin.png");
+  keyInventory = loadImage("assets/keyInventory.png");
+
 
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
@@ -74,7 +86,7 @@ function preload(){
 function setup() {
   createCanvas(1600, 789);
   toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
-  bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight!", "Hello Mr Fox! Are you having a nice nap?", false);
+  bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight! Oh but's there's a hairpin I can use.", "Hello Mr Fox! Are you having a nice nap?", false);
   cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
   papers = new Objects("papers", "Red and tiny you are hinding from me.", " I hate the monster!", false);
   clipboard = new Objects("clipboard", "Psycho- what? I'm definitely not that for sure!", "Who did what? I'm so confused", false);
@@ -275,10 +287,10 @@ class Objects{
       else if(this.whatObject === "purse" && this.whatObject === "cabinet"){
         this.whateverText = this.whatToSay1;
       }
+
       fill("white");
       textSize(24);
       textFont("Gerogia");
-      textAlign("center");
       text(this.whateverText, 500, 750);
     }
       
@@ -286,7 +298,23 @@ class Objects{
   
 }
 
+function getObjects(){
+  if(inventoryOpen === true){
+    image(inventoryIMG, 0, 0, theBackground.y, theBackground.x);
+    if(hasHook === true){
+      image(hookInventory, 0, 0, theBackground.y, theBackground.x);
+    }
+    if(hasPin === true && hasHook === true){
+      image(pinAndHookInventory, 0, 0, theBackground.y, theBackground.x);
 
+    }
+
+    if(keyMade === true){
+      image(keyInventory, 0, 0, theBackground.y, theBackground.x);
+    }
+
+  }
+}
 
 function mousePressed(){
   isItCLicked();
@@ -330,6 +358,9 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+
+
+    hasPin = true;
   }
   else if(crossHit === true){
     cross.displayText = true;
@@ -421,6 +452,8 @@ function isItCLicked(){
     cabinet.displayText = false;
     window.displayText = false;
     purse.displayText = false;
+
+    hasHook = true;
   }
   else if(purseHit === true){ // inventory opens
     purse.displayText = true;
@@ -438,56 +471,24 @@ function isItCLicked(){
   }
 }
 
-function sound(){
-
-  //detrimes which sound to play, making one true the rest false
-  if(lvl1OrLvl2 === 1 ){
-    // backgroundMusicPLay1 = true;
-    // backgroundMusicPLay2 = false;
-    toySoundPLay2 = false;
-    toySoundPLay1 = false;
-
-    if (toyHit  === true){
-      toySoundPLay1 = true;
-      toySoundPLay2  = false;
-      backgroundMusicPLay1 = false;
-      backgroundMusicPLay2 = false;
-
-    }
-
-  }
-  if(lvl1OrLvl2 === 2 ){
-    // backgroundMusicPLay2 = true;
-    // backgroundMusicPLay1 = false;
-    toySoundPLay2 = false;
-    toySoundPLay1 = false;
-
-    if (toyHit  === true){
-      toySoundPLay2 = true;
-      toySoundPLay1 = false;
-      backgroundMusicPLay1 = false;
-      backgroundMusicPLay2 = false;
-    }
-  }
-
-  //plays the sound
-  if(toySoundPLay1 === true){
-    circusMusic1.play();
-  }
-  else if(toySoundPLay2 === true){
-    circusMusic2.play();
-  }
-
-}
 
 
 function inventory(){
   if(inventoryOpen === true){
-    image(inventoryIMG, 0, 0, theBackground.y, theBackground.x);
+
+    getObjects();
+
+
+    rect(420, 150, 140, 140); // hook
+    rect(570, 150, 140, 140); //hairpinn
 
     useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
     combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
     examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
+
+
+    pinHit = collidePointRect(mouseX, mouseY, 570, 150, 140, 140 );
+    hookHit = collidePointRect(mouseX, mouseY, 420, 150, 140, 140);
 
 
     if (mouseIsPressed){     
@@ -511,7 +512,6 @@ function inventory(){
       textFont("Gerogia");
       textAlign("center");
       text("Pick an object to use", 500, 750);
-      console.log("here");
     }
     else if (combine === true){
       fill("white");
@@ -519,7 +519,6 @@ function inventory(){
       textFont("Gerogia");
       textAlign("center");
       text("Pick two objects to combine", 500, 750);
-      console.log("here");
     }
     else if (examine === true){
       fill("white");
@@ -527,7 +526,11 @@ function inventory(){
       textFont("Gerogia");
       textAlign("center");
       text("Pick an object to examine", 500, 750);
-      console.log("here");
+      if(mouseIsPressed){
+        if(hookHit === true){
+          text("")
+        }
+      }
     }
   }
 }
