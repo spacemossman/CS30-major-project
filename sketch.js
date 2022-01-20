@@ -22,16 +22,21 @@ let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purs
 let lvl1OrLvl2; 
 
 //things you can do in the inventory
-let inventoryOpen = true;
+let inventoryOpen = false;
 let use = false;
 let combine  = false;
 let examine = false;
 let keyMade = false;
 
 //things in the inventory
-let hasPin = true;
-let hasHook = true;
+let hasPin = false;
+let hasHook = false;
 let hasNeedle = false;
+
+let hook = false;
+let pin = false;
+let needle = false;
+let combinedKey = false;
 
 let pinHit  = false;
 let hookHit = false;
@@ -122,7 +127,6 @@ function draw() {
     purse.descriptions();
   }
   else if(inventoryOpen === true){
-    purse.descriptions();
     inventory();
   }
   
@@ -478,10 +482,6 @@ function inventory(){
 
     getObjects();
 
-
-    rect(420, 150, 140, 140); // hook
-    rect(570, 150, 140, 140); //hairpinn
-
     useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
     combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
     examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
@@ -501,36 +501,62 @@ function inventory(){
       else if (examineHit === true){
         examine = true;
       }
-    }
 
-
-
-    if (use === true){
-      
-      fill("white");
-      textSize(24);
-      textFont("Gerogia");
-      textAlign("center");
-      text("Pick an object to use", 500, 750);
-    }
-    else if (combine === true){
-      fill("white");
-      textSize(24);
-      textFont("Gerogia");
-      textAlign("center");
-      text("Pick two objects to combine", 500, 750);
-    }
-    else if (examine === true){
-      fill("white");
-      textSize(24);
-      textFont("Gerogia");
-      textAlign("center");
-      text("Pick an object to examine", 500, 750);
-      if(mouseIsPressed){
-        if(hookHit === true){
-          text("")
-        }
+      if(hookHit === true){
+        hook = true;
+      }
+      if(pinHit === true){
+        pin = true;
+      }
+      if(needleHit === true){
+        needle = true;
+      }
+      else if (keyHit === true){
+        combinedKey = true; 
       }
     }
+
+
+    
+    if (use === true){
+      purse.whateverText = "Pick an object to use";
+    }
+    else if (combine === true){
+      purse.whateverText = "pick two objects to combine";
+      if(needle === true && pin === true){
+        keyMade === true;
+        purse.whateverText = "A key! Maybe i can open up the cabinet with this!";
+        combine = false;
+        needle = false;
+        pin = false;
+      }
+      else if(needle === true && hook === true){
+        purse.whateverText = "that just won't work";
+        combine = false;
+        needle = false;
+        hook = false;
+      }
+      else if(hook === true && pin === true){
+        purse.whateverText = "Hmm, I don't think that will work";
+        combine = false;
+        hook = false;
+        pin = false;
+      }
+    }
+    else if (examine === true){
+      purse.whateverText = "pick an object to examine";
+      if(hook === true){
+        purse.whateverText = "the hook that fell of the drapes";
+        examine = false;
+        hook = false;
+      }
+      else if(pin === true){
+        purse.whateverText = "the hairpin i left in my bed! It must have fallen out while i was sleeping.";
+        examine = false;
+        pin = false;
+      }
+    }
+    purse.displayText = true;
+    purse.descriptions();
   }
 }
