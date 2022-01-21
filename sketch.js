@@ -29,9 +29,9 @@ let examine = false;
 let keyMade = false;
 
 //things in the inventory
-let hasPin = false;
-let hasHook = false;
-let hasNeedle = false;
+let hasPin = true;
+let hasHook = true;
+let hasNeedle = true;
 
 let hook = false;
 let pin = false;
@@ -76,6 +76,7 @@ function preload(){
   inventoryIMG = loadImage("assets/emptyinventory.png");
   hookInventory = loadImage("assets/inventoryOpenHook.png");
   pinAndHookInventory = loadImage("assets/hairpin.png");
+  pinANdHookAndNeedleInventory = loadImage("assets/pinneedlehook.png");
   keyInventory = loadImage("assets/keyInventory.png");
 
 
@@ -89,7 +90,7 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(1600, 789);
+  createCanvas(1600, 780);
   toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
   bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight! Oh but's there's a hairpin I can use.", "Hello Mr Fox! Are you having a nice nap?", false);
   cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
@@ -312,8 +313,11 @@ function getObjects(){
       image(pinAndHookInventory, 0, 0, theBackground.y, theBackground.x);
 
     }
+    if(hasPin === true && hasHook === true && hasNeedle){
+      image(pinANdHookAndNeedleInventory, 0, 0, theBackground.y, theBackground.x);
+    }
 
-    if(keyMade === true){
+    else if(keyMade === true && hasHook === true){
       image(keyInventory, 0, 0, theBackground.y, theBackground.x);
     }
 
@@ -489,6 +493,7 @@ function inventory(){
 
     pinHit = collidePointRect(mouseX, mouseY, 570, 150, 140, 140 );
     hookHit = collidePointRect(mouseX, mouseY, 420, 150, 140, 140);
+    needleHit = collidePointRect(mouseX, mouseY, 700, 150, 140, 140);
 
 
     if (mouseIsPressed){     
@@ -520,15 +525,17 @@ function inventory(){
     
     if (use === true){
       purse.whateverText = "Pick an object to use";
+      
     }
     else if (combine === true){
       purse.whateverText = "pick two objects to combine";
       if(needle === true && pin === true){
-        keyMade === true;
+        keyMade = true;
         purse.whateverText = "A key! Maybe i can open up the cabinet with this!";
+        getObjects();
         combine = false;
-        needle = false;
-        pin = false;
+        hasPin = false;
+        hasNeedle = false;
       }
       else if(needle === true && hook === true){
         purse.whateverText = "that just won't work";
