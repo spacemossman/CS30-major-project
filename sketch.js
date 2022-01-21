@@ -22,11 +22,13 @@ let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purs
 let lvl1OrLvl2; 
 
 //things you can do in the inventory
-let inventoryOpen = false;
+let inventoryOpen = true;
 let use = false;
 let combine  = false;
 let examine = false;
 let keyMade = false;
+
+let useWith  = " "; 
 
 //things in the inventory
 let hasPin = true;
@@ -90,7 +92,7 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(1600, 780);
+  createCanvas(1600, 790);
   toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
   bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight! Oh but's there's a hairpin I can use.", "Hello Mr Fox! Are you having a nice nap?", false);
   cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
@@ -320,7 +322,6 @@ function getObjects(){
     else if(keyMade === true && hasHook === true){
       image(keyInventory, 0, 0, theBackground.y, theBackground.x);
     }
-
   }
 }
 
@@ -486,6 +487,7 @@ function inventory(){
 
     getObjects();
 
+
     useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
     combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
     examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
@@ -494,6 +496,7 @@ function inventory(){
     pinHit = collidePointRect(mouseX, mouseY, 570, 150, 140, 140 );
     hookHit = collidePointRect(mouseX, mouseY, 420, 150, 140, 140);
     needleHit = collidePointRect(mouseX, mouseY, 700, 150, 140, 140);
+    keyHit = collidePointRect(mouseX, mouseY, 420, 270, 140, 140 );
 
 
     if (mouseIsPressed){     
@@ -522,10 +525,8 @@ function inventory(){
     }
 
 
-    
-    if (use === true){
-      purse.whateverText = "Pick an object to use";
-      
+    if(use === true){
+      useObject();
     }
     else if (combine === true){
       purse.whateverText = "pick two objects to combine";
@@ -562,8 +563,42 @@ function inventory(){
         examine = false;
         pin = false;
       }
+      else if (needle === true){
+        purse.whateverText = "A knitting needle! I don't have any yarn or the other needle to knit though. ";
+        examine = false;
+        needle = false;
+      }
     }
     purse.displayText = true;
     purse.descriptions();
+  }
+}
+
+function useObject (){
+  if(use === true){
+    inventoryOpen = false; 
+
+    if( toyHit === true){
+      useWith = "toy";
+    }
+    else if(bedHit === true){
+      useWith = "bed";
+    }
+    else if (crossHit === true){
+      useWith = "cross";
+    }
+    else if(clownHit === true){
+      useWith = "clown";
+
+    }
+    else if(cabinetHit === true){
+      useWith = "cabinet";
+    }
+    else if (drapesHit === true){
+      useWith = "drapes";
+    }
+    
+
+    text( "pick an object to use " + useWith); 
   }
 }
