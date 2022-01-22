@@ -16,13 +16,13 @@ let circusMusic1, circusMusic2;
 let theObjects, theBackground;
  
 //each different class
-let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse;
+let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain;
 
 //state varible between spooky room and noraml room
 let lvl1OrLvl2; 
 
 //things you can do in the inventory
-let inventoryOpen = true;
+let inventoryOpen = false;
 let use = false;
 let combine  = false;
 let examine = false;
@@ -31,9 +31,9 @@ let keyMade = false;
 let useWith  = " "; 
 
 //things in the inventory
-let hasPin = true;
-let hasHook = true;
-let hasNeedle = true;
+let hasPin = false;
+let hasHook = false;
+let hasNeedle = false;
 
 let hook = false;
 let pin = false;
@@ -57,6 +57,7 @@ let clownHit = false;
 let cabinetHit = false;
 let windowHit = false;
 let drapesHit = false;
+let curtainHit = false;
 let purseHit = false;
 let eyeHit = false;
 
@@ -88,7 +89,7 @@ function preload(){
   // backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
   // backgroungMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
   circusMusic1 = loadSound("assets/Children's March Theme.mp3");
-  circusMusic2 = loadSound("assets/marionettes.mp3");
+  circusMusic2 = loadSound("assets/spooky music.mp3");
 }
 
 function setup() {
@@ -103,13 +104,14 @@ function setup() {
   windowView = new Objects("window", "It's not time to play outside", "That's my head! why do you have my head?", false);
   drapes = new Objects("drapes", "A handy Hook! maybe i can make a key out of this", "they  were like this when i found them", false);
   purse = new Objects("purse", "the purse that my Aunt Grace Gave Me!", "Maybe i should try combining something", false);
+  curtain = new Objects("curtain", "A Knitting needle! Someone must of left it here!", "There's nothing here! I already took the knitting needle.", false);
   theBackground = new Background();
 }
 
 function draw() {
 
   // inventory();
-
+  rect(1400, 200, 100, 100);
   
   toy.display();
 
@@ -143,6 +145,7 @@ function draw() {
   windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
   eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
   cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
+  curtainHit = collidePointRect(mouseX, mouseY, 1270, 200, 200, 300);
 
   //object is given when clicked 
   drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
@@ -215,7 +218,6 @@ class Background{
       }
       else if(papersHit === true){
         this.displayPapers1 = true;
-        console.log("ayup");
       }
       else if(clipboardHit === true){
         this.displayClipboard1 = true;
@@ -264,10 +266,12 @@ class Objects{
 
     this.displayText = displayText;
   }
+
   display(){
     fill("black");
     circle(1510, 370, 80);
     point(mouseX, mouseY);
+
   }
 
   switchRoom(){
@@ -282,7 +286,6 @@ class Objects{
     if(this.displayText === true ){
 
       if (this.whatObject !== "purse" && this.whatObject !== "cabinet"){
-      
         if(lvl1OrLvl2 === 1){
           this.whateverText = this.whatToSay1;
         }
@@ -344,7 +347,6 @@ function isItCLicked(){
   if(toyHit === true){
     toy.displayText = true;
 
-
     bed.displayText = false;
     cross.displayText = false;
     papers.displayText = false;
@@ -354,6 +356,14 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
+
+    if(lvl1OrLvl2 === 1){
+      circusMusic1.play();
+    }
+    else if (lvl1OrLvl2 === 2){
+      circusMusic2.play();
+    }
   }
   else if(bedHit === true){ // vareint
     bed.displayText = true;
@@ -367,6 +377,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
 
 
     hasPin = true;
@@ -383,6 +394,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(papersHit === true){
     papers.displayText = true;
@@ -396,6 +408,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(clipboardHit === true){
     clipboard.displayText = true;
@@ -409,6 +422,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(clownHit === true){
     clown.displayText = true;
@@ -422,6 +436,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(cabinetHit === true){ //varient main obejct of the game trying to unlock
     cabinet.displayText = true;
@@ -435,6 +450,7 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(windowHit === true){
     window.displayText = true;
@@ -448,6 +464,7 @@ function isItCLicked(){
     cabinet.displayText = false;
     drapes.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
   }
   else if(drapesHit === true){ // varient give hook once hook is given other text
     drapes.displayText = true;
@@ -461,6 +478,7 @@ function isItCLicked(){
     cabinet.displayText = false;
     window.displayText = false;
     purse.displayText = false;
+    curtain.displayText = false; 
 
     hasHook = true;
   }
@@ -477,12 +495,31 @@ function isItCLicked(){
     cabinet.displayText = false;
     window.displayText = false;
     drapes.displayText = false;
+    curtain.displayText = false; 
+  }
+  else if(curtainHit === true){
+    curtain.displayText = true; 
+
+    toy.displayText = false;
+    bed.displayText = false;
+    cross.displayText = false;
+    papers.displayText = false;
+    clipboard.displayText = false;
+    clown.displayText = false;
+    cabinet.displayText = false;
+    window.displayText = false;
+    drapes.displayText = false;
+    purse.displayText = false; 
+    
+    console.log("here");
+    hasNeedle = true;
   }
 }
 
 
 
 function inventory(){
+
   if(inventoryOpen === true){
 
     getObjects();
@@ -577,8 +614,9 @@ function inventory(){
 function useObject (){
   if(use === true){
     inventoryOpen = false; 
-
-    if( toyHit === true){
+    use = false;
+  }
+    if(toyHit === true){
       useWith = "toy";
     }
     else if(bedHit === true){
@@ -599,6 +637,8 @@ function useObject (){
     }
     
 
-    text( "pick an object to use " + useWith); 
-  }
+    fill("white");
+    textSize(24);
+    textFont("Gerogia");
+    text( "pick an object to use " + useWith, 500, 750); 
 }
