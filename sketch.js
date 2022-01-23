@@ -8,18 +8,18 @@
 //pictures and sound
 let levelOneRoom, levelTwoRoom;
 let window1, window2;
-let openCabinet, inventoryIMG;
+let openCabinet, inventoryIMG, mrMidnight;
 let hookInventory, pinAndHookInventory, keyInventory, pinANdHookAndNeedleInventory;
 let clipboard1, clipboard2, papers1, papers2;
-let backgroundMusicLvl1, backgroungMusicLvl2;
+let backgroundMusicLvl1, backgroundMusicLvl2;
 let circusMusic1, circusMusic2;
 let theObjects, theBackground;
  
 //each different class
 let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain;
 
-//state varible between spooky room and noraml room
-let lvl1OrLvl2; 
+//state varible between spooky room and normal room
+let lvl1OrLvl2 = 1;
 
 //things you can do in the inventory
 let inventoryOpen = false;
@@ -83,11 +83,13 @@ function preload(){
   keyInventory = loadImage("assets/keyInventory.png");
 
 
+  mrMidnight = loadImage("assets/mrMidnight.png");
+
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
 
-  // backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
-  // backgroungMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
+  backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
+  backgroundMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
   circusMusic1 = loadSound("assets/Children's March Theme.mp3");
   circusMusic2 = loadSound("assets/spooky music.mp3");
 }
@@ -109,14 +111,11 @@ function setup() {
 }
 
 function draw() {
-
-  // inventory();
-  rect(1400, 200, 100, 100);
-  
   toy.display();
 
+
   if(inventoryOpen === false){
-  
+    
     theBackground.display();
     inventory();
   
@@ -171,19 +170,16 @@ class Background{
     this.displayClipboard2 = false;
 
     this.displayOpenCabinet = false;
+    this.winGame = false; 
   }
 
   display(){
-
-
     if(toy.clicked === false && this.displayWindow1 === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
-      // backgroundMusicLvl1.play();
       lvl1OrLvl2 = 1;
     }
     else if(toy.clicked === true && this.displayWindow2 === false){
       image(levelTwoRoom, 0, 0, this.y, this.x);
-      
       lvl1OrLvl2 = 2; 
     }
     else if(this.displayWindow1 === true){
@@ -204,14 +200,39 @@ class Background{
     else if(this.displayClipboard2 === true){
       image(clipboard2, 0, 0, this.y, this.x);
     }
-    else if (this.displayOpenCabinet){
-      image(openCabinet, 0, 0, this.displayOpenCabinet);
+    else if (this.displayOpenCabinet === true){
+      image(openCabinet, 0, 0, this.y, this.x);
+    }
+
+    if (this.winGame === true){
+      image(mrMidnight, 700, 300);
+      cabinet.whateverText = "Mr Midnight! I finally found you!"
     }
 
   }
 
 
   isItCLickedBackgrounds(){
+
+    if(use === true && combinedKey === true){
+      if(mouseIsPressed && cabinetHit === true){
+        this.displayOpenCabinet = true;
+        cabinet.displayText = true;
+        cabinet.whateverText = "It's unlocked! I wonder what's inside!"
+        if(mouseIsPressed && cabinetHit === true){
+          this.winGame = true;
+        }
+      }
+    }
+    else if (use === true && (hook === true || pin === true || needle === true)){
+      if(mouseIsPressed){
+        fill("white");
+        textSize(24);
+        textFont("Gerogia");
+        text("that just won't work", 500, 750);
+      }
+    }
+
     if(lvl1OrLvl2 === 1){
       if(windowHit === true){
         this.displayWindow1 = true;
@@ -278,34 +299,24 @@ class Objects{
     if(pillHit === true){
       this.clicked = !this.clicked;
     }
-    
   }
   
   
   descriptions(){
     if(this.displayText === true ){
-
-      if (this.whatObject !== "purse" && this.whatObject !== "cabinet"){
-        if(lvl1OrLvl2 === 1){
+        if(lvl1OrLvl2 === 1 && this.whatObject !== "purse" && this.whatObject !== "cabinet"){
           this.whateverText = this.whatToSay1;
         }
-        else if (lvl1OrLvl2 === 2){
+        else if (lvl1OrLvl2 === 2 && this.whatObject !== "purse" && this.whatObject !== "cabinet"){
           this.whateverText = this.whatToSay2;
         }
-      }
-
-      else if(this.whatObject === "purse" && this.whatObject === "cabinet"){
-        this.whateverText = this.whatToSay1;
-      }
-
+        else if(this.whatObject)
       fill("white");
       textSize(24);
       textFont("Gerogia");
       text(this.whateverText, 500, 750);
-    }
-      
+    }  
   }
-  
 }
 
 function getObjects(){
@@ -328,15 +339,16 @@ function getObjects(){
   }
 }
 
-function mousePressed(){
-  isItCLicked();
+function mousePressed(){ 
   
   if(purseHit === true){
     inventoryOpen = !inventoryOpen;
   }
+
+  if(inventoryOpen === false){
+    isItCLicked();
+  }
   
-  toy.switchRoom();
-  purse.switchRoom();
   
   theBackground.isItCLickedBackgrounds();
 }
@@ -563,7 +575,7 @@ function inventory(){
 
 
     if(use === true){
-      useObject();
+      theBackground.isItCLickedBackgrounds();
     }
     else if (combine === true){
       purse.whateverText = "pick two objects to combine";
@@ -611,34 +623,20 @@ function inventory(){
   }
 }
 
-function useObject (){
-  if(use === true){
-    inventoryOpen = false; 
-    use = false;
+function sound(){
+  if(lvl1OrLvl2 === 2 && toy.displayText === false){
+    backgroundMusicLvl2.play();
+    backgroundMusicLvl2.loop();
+    backgroundMusicLvl1.stop();
   }
-    if(toyHit === true){
-      useWith = "toy";
-    }
-    else if(bedHit === true){
-      useWith = "bed";
-    }
-    else if (crossHit === true){
-      useWith = "cross";
-    }
-    else if(clownHit === true){
-      useWith = "clown";
-
-    }
-    else if(cabinetHit === true){
-      useWith = "cabinet";
-    }
-    else if (drapesHit === true){
-      useWith = "drapes";
-    }
-    
-
-    fill("white");
-    textSize(24);
-    textFont("Gerogia");
-    text( "pick an object to use " + useWith, 500, 750); 
+  else if (lvl1OrLvl2 === 1 && toy.displayText === false){
+    backgroundMusicLvl1.play();
+    backgroundMusicLvl1.loop();
+    backgroundMusicLvl2.stop(); 
+  }
+  if (toy.displayText === true){
+    backgroundMusicLvl1.stop();
+    backgroundMusicLvl2.stop();
+  }
 }
+
