@@ -18,8 +18,11 @@ let theObjects, theBackground;
 //each different class
 let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain;
 
+let state = "start"; 
 //state varible between spooky room and normal room
-let lvl1OrLvl2 = 1;
+let lvl1OrLvl2 = 1; 
+
+let howManTimesClicked = 0; 
 
 //things you can do in the inventory
 let inventoryOpen = false;
@@ -105,14 +108,13 @@ function setup() {
   cabinet = new Objects("cabinet", "It's locked", "Thank goodness for extra keys!", false);
   windowView = new Objects("window", "It's not time to play outside", "That's my head! why do you have my head?", false);
   drapes = new Objects("drapes", "A handy Hook! maybe i can make a key out of this", "they  were like this when i found them", false);
-  purse = new Objects("purse", "the purse that my Aunt Grace Gave Me!", "Maybe i should try combining something", false);
+  purse = new Objects("purse", " ", " ", false);
   curtain = new Objects("curtain", "A Knitting needle! Someone must of left it here!", "There's nothing here! I already took the knitting needle.", false);
   theBackground = new Background();
 }
 
 function draw() {
   toy.display();
-
 
   if(inventoryOpen === false){
     
@@ -129,6 +131,7 @@ function draw() {
     windowView.descriptions();
     drapes.descriptions();
     purse.descriptions();
+    curtain.descriptions();
   }
   else if(inventoryOpen === true){
     inventory();
@@ -206,7 +209,7 @@ class Background{
 
     if (this.winGame === true){
       image(mrMidnight, 700, 300);
-      cabinet.whateverText = "Mr Midnight! I finally found you!"
+      cabinet.whateverText = "Mr Midnight! I finally found you!";
     }
 
   }
@@ -218,10 +221,10 @@ class Background{
       if(mouseIsPressed && cabinetHit === true){
         this.displayOpenCabinet = true;
         cabinet.displayText = true;
-        cabinet.whateverText = "It's unlocked! I wonder what's inside!"
-        if(mouseIsPressed && cabinetHit === true){
-          this.winGame = true;
-        }
+        howManTimesClicked++; 
+      }
+      if(cabinet.howManTimesClicked === 2 && cabinetHit === true){
+        this.winGame = true;
       }
     }
     else if (use === true && (hook === true || pin === true || needle === true)){
@@ -286,6 +289,7 @@ class Objects{
     this.whatToSay2 = whatText2;
 
     this.displayText = displayText;
+    this.howManyTimesClicked = 0; 
   }
 
   display(){
@@ -303,14 +307,29 @@ class Objects{
   
   
   descriptions(){
-    if(this.displayText === true ){
-        if(lvl1OrLvl2 === 1 && this.whatObject !== "purse" && this.whatObject !== "cabinet"){
-          this.whateverText = this.whatToSay1;
-        }
-        else if (lvl1OrLvl2 === 2 && this.whatObject !== "purse" && this.whatObject !== "cabinet"){
+    if(this.displayText === true){
+      if(lvl1OrLvl2 === 1 && 
+        (this.whatObject !== "purse" && this.whatObject !== "curtain" && this.whatObject !== "cabinet" && this.whatObject !== "drapes")){
+        this.whateverText = this.whatToSay1;
+      }
+      else if (lvl1OrLvl2 === 2 && 
+        (this.whatObject !== "purse" && this.whatObject !== "curtain" && this.whatObject !== "cabinet" && this.whatObject !== "drapes")){
+        this.whateverText = this.whatToSay2;
+      }
+      else if (this.whatObject === "purse" || this.whatObject === "curtain" || this.whatObject === "cabinet" || this.whatObject === "drapes"){
+        if(this.howManyTimesClicked === 2){
           this.whateverText = this.whatToSay2;
         }
-        else if(this.whatObject)
+        else if (this.howManyTimesClicked === 1 ){
+          this.whateverText = this.whatToSay1;
+        }
+        else if(this.whatObject === "cabinet" && theBackground.displayOpenCabinet === true){
+          this.whateverText = "It's unlocked! I wonder what's inside!";
+          if(this.whatObject === "cabinet" && theBackground.winGame === true){
+            this.whateverText = "Mr Midnight! I finally found you!";
+          }
+        }
+      }
       fill("white");
       textSize(24);
       textFont("Gerogia");
@@ -349,7 +368,7 @@ function mousePressed(){
     isItCLicked();
   }
   
-  
+  toy.switchRoom();
   theBackground.isItCLickedBackgrounds();
 }
 
@@ -392,6 +411,7 @@ function isItCLicked(){
     curtain.displayText = false; 
 
 
+    bed.howManyTimesClicked++;
     hasPin = true;
   }
   else if(crossHit === true){
@@ -492,11 +512,11 @@ function isItCLicked(){
     purse.displayText = false;
     curtain.displayText = false; 
 
+    drapes.howManyTimesClicked++; 
     hasHook = true;
   }
   else if(purseHit === true){ // inventory opens
     purse.displayText = true;
-    // sinventoryOpen = true;
 
     toy.displayText = false;
     bed.displayText = false;
@@ -522,8 +542,8 @@ function isItCLicked(){
     window.displayText = false;
     drapes.displayText = false;
     purse.displayText = false; 
-    
-    console.log("here");
+
+    curtain.howManyTimesClicked++;
     hasNeedle = true;
   }
 }
