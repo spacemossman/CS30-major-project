@@ -6,7 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 //pictures and sound
-let levelOneRoom, levelTwoRoom;
+let levelOneRoom, levelTwoRoom, menu;
 let window1, window2;
 let openCabinet, inventoryIMG, mrMidnight;
 let hookInventory, pinAndHookInventory, keyInventory, pinANdHookAndNeedleInventory;
@@ -16,7 +16,7 @@ let circusMusic1, circusMusic2;
 let theObjects, theBackground;
  
 //each different class
-let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain;
+let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain; 
 
 let state = "start"; 
 //state varible between spooky room and normal room
@@ -90,6 +90,7 @@ function preload(){
 
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
+  menu = loadImage("assets/menu screen.png"); 
 
   backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
   backgroundMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
@@ -99,65 +100,88 @@ function preload(){
 
 function setup() {
   createCanvas(1600, 790);
-  toy = new Objects("toy", "what a delightful tune!", "this doesn't sound right", false);
-  bed = new Objects("bed", "I Can't sleep now, I need to find Mr. Midnight! Oh but's there's a hairpin I can use.", "Hello Mr Fox! Are you having a nice nap?", false);
-  cross = new Objects("cross", "I hope it doesn't fall on my head while i sleep", "I don't understand. It was not who?", false);
-  papers = new Objects("papers", "Red and tiny you are hinding from me.", " I hate the monster!", false);
+  toy = new Objects("toy", "What a delightful tune!", "This does not sound right.", false);
+  bed = new Objects("bed", "I can't sleep now; I need to find Mr. Midnight! Oh, but's there's a hairpin I can use.", "Hello Mr. Fox! Are you having a nice nap?", false);
+  cross = new Objects("cross", "Hello Mr. Fox! Are you having a nice nap?", "I don't understand. It was not who?", false);
+  papers = new Objects("papers", "Red and tiny you are hiding from me.", "I hate the monster!", false);
   clipboard = new Objects("clipboard", "Psycho- what? I'm definitely not that for sure!", "Who did what? I'm so confused", false);
-  clown = new Objects("clown", "How are you Mr Clown?", "Where did you go Mr Clown?", false);
+  clown = new Objects("clown", "How are you Mr. Clown?", "Where did you go Mr. Clown?", false);
   cabinet = new Objects("cabinet", "It's locked", "Thank goodness for extra keys!", false);
-  windowView = new Objects("window", "It's not time to play outside", "That's my head! why do you have my head?", false);
-  drapes = new Objects("drapes", "A handy Hook! maybe i can make a key out of this", "they  were like this when i found them", false);
+  windowView = new Objects("window", "It's not time to play outside", "That's my head! Why do you have my head?", false);
+  drapes = new Objects("drapes", "A handy Hook! Maybe i can make a key out of this", "They were like this when i found them", false);
   purse = new Objects("purse", " ", " ", false);
-  curtain = new Objects("curtain", "A Knitting needle! Someone must of left it here!", "There's nothing here! I already took the knitting needle.", false);
+  curtain = new Objects("curtain", "A knitting needle! Someone must of left it here!", "There's nothing here! I already took the knitting needle.", false);
   theBackground = new Background();
 }
 
 function draw() {
-  toy.display();
+  if(state === "start"){
+    image(menu, 0, 0, theBackground.y, theBackground.x);
 
-  if(inventoryOpen === false){
+    noStroke(); 
+    fill("white");
+    rect(630, 330, 400, 400);
+
+    fill("black");
+    textSize(50);
+    textFont("Gerogia");
+    text("Press enter to start!", 635, 380);
+    textSize(24);
+    text("Instructions: Click around to explore and", 635, 430);  
+    text("to open the cabinet.", 635, 460);
+    text("Check your inventory on the bottom left", 635, 490);  
+    text("so that you can make a key.", 635, 520);
+    text("make sure to click everywhere!", 635, 550);
+
+  }
+  else if (state === "game"){ 
+
+    toy.display();
+  
+    if(inventoryOpen === false){
+      
+      theBackground.display();
+      inventory();
     
-    theBackground.display();
-    inventory();
+      toy.descriptions();
+      bed.descriptions();
+      cross.descriptions();
+      papers.descriptions();
+      clipboard.descriptions();
+      clown.descriptions();
+      cabinet.descriptions();
+      windowView.descriptions();
+      drapes.descriptions();
+      purse.descriptions();
+      curtain.descriptions();
+    }
+    else if(inventoryOpen === true){
+      inventory();
+    }
+    
   
-    toy.descriptions();
-    bed.descriptions();
-    cross.descriptions();
-    papers.descriptions();
-    clipboard.descriptions();
-    clown.descriptions();
-    cabinet.descriptions();
-    windowView.descriptions();
-    drapes.descriptions();
-    purse.descriptions();
-    curtain.descriptions();
-  }
-  else if(inventoryOpen === true){
-    inventory();
+  
+    // where every item is, and if it is clikced or not
+    //background changes when clicked 
+    pillHit = collidePointRect(mouseX, mouseY, 1440, 630, 120, 140);
+    papersHit = collidePointRect(mouseX, mouseY, 1150, 260, 100, 100);
+    clipboardHit = collidePointRect(mouseX, mouseY, 750, 240, 50, 100);
+    windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
+    eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
+    cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
+    curtainHit = collidePointRect(mouseX, mouseY, 1270, 200, 200, 300);
+  
+    //object is given when clicked 
+    drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
+    bedHit = collidePointRect(mouseX, mouseY, 900, 300, 245, 245);
+  
+    //text is only displayed 
+    toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
+    crossHit  = collidePointRect(mouseX, mouseY, 940, 150, 100, 100);
+    clownHit = collidePointRect(mouseX, mouseY, 580, 160, 110, 130);
+    purseHit = collidePointRect(mouseX, mouseY, 20, 650, 160, 120);
   }
   
-
-
-  // where every item is, and if it is clikced or not
-  //background changes when clicked 
-  pillHit = collidePointRect(mouseX, mouseY, 1440, 630, 120, 140);
-  papersHit = collidePointRect(mouseX, mouseY, 1150, 260, 100, 100);
-  clipboardHit = collidePointRect(mouseX, mouseY, 750, 240, 50, 100);
-  windowHit = collidePointRect(mouseX, mouseY, 300, 140, 240, 180);
-  eyeHit = collidePointCircle(mouseX, mouseY, 70, 370, 70);
-  cabinetHit = collidePointRect(mouseX, mouseY, 580, 340, 130, 130);
-  curtainHit = collidePointRect(mouseX, mouseY, 1270, 200, 200, 300);
-
-  //object is given when clicked 
-  drapesHit = collidePointRect(mouseX, mouseY, 270, 400, 270, 70 );
-  bedHit = collidePointRect(mouseX, mouseY, 900, 300, 245, 245);
-
-  //text is only displayed 
-  toyHit = collidePointRect(mouseX, mouseY, 440, 540, 75, 150);
-  crossHit  = collidePointRect(mouseX, mouseY, 940, 150, 100, 100);
-  clownHit = collidePointRect(mouseX, mouseY, 580, 160, 110, 130);
-  purseHit = collidePointRect(mouseX, mouseY, 20, 650, 160, 120);
 }
 
 
@@ -209,7 +233,7 @@ class Background{
 
     if (this.winGame === true){
       image(mrMidnight, 700, 300);
-      cabinet.whateverText = "Mr Midnight! I finally found you!";
+      cabinet.whateverText = "Mr. Midnight! I finally found you!";
     }
 
   }
@@ -232,7 +256,7 @@ class Background{
         fill("white");
         textSize(24);
         textFont("Gerogia");
-        text("that just won't work", 500, 750);
+        text("That just won't work", 500, 750);
       }
     }
 
@@ -317,7 +341,10 @@ class Objects{
         this.whateverText = this.whatToSay2;
       }
       else if (this.whatObject === "purse" || this.whatObject === "curtain" || this.whatObject === "cabinet" || this.whatObject === "drapes"){
-        if(this.howManyTimesClicked === 2){
+        if(this.howManTimesClicked === 100){
+          this.whateverText = "Why did you click this 100 times? Why? "
+        }
+        else if(this.howManyTimesClicked >= 2){
           this.whateverText = this.whatToSay2;
         }
         else if (this.howManyTimesClicked === 1 ){
@@ -328,6 +355,9 @@ class Objects{
           if(this.whatObject === "cabinet" && theBackground.winGame === true){
             this.whateverText = "Mr Midnight! I finally found you!";
           }
+        }
+        else if (this.whatObject === "cabinet"){
+          this.whateverText = this.whatToSay1; 
         }
       }
       fill("white");
@@ -372,6 +402,15 @@ function mousePressed(){
   theBackground.isItCLickedBackgrounds();
 }
 
+
+function keyPressed(){
+  if(state === "start"){
+    if(keyCode === 13){
+      state = "game";
+    }
+  }
+  sound();
+}
 
 function isItCLicked(){
   
@@ -601,14 +640,14 @@ function inventory(){
       purse.whateverText = "pick two objects to combine";
       if(needle === true && pin === true){
         keyMade = true;
-        purse.whateverText = "A key! Maybe i can open up the cabinet with this!";
+        purse.whateverText = "A key! Maybe I can open up the cabinet with this!";
         getObjects();
         combine = false;
         hasPin = false;
         hasNeedle = false;
       }
       else if(needle === true && hook === true){
-        purse.whateverText = "that just won't work";
+        purse.whateverText = "That just won't work";
         combine = false;
         needle = false;
         hook = false;
@@ -621,19 +660,19 @@ function inventory(){
       }
     }
     else if (examine === true){
-      purse.whateverText = "pick an object to examine";
+      purse.whateverText = "Pick an object to examine";
       if(hook === true){
-        purse.whateverText = "the hook that fell of the drapes";
+        purse.whateverText = "The hook that fell of the drapes";
         examine = false;
         hook = false;
       }
       else if(pin === true){
-        purse.whateverText = "the hairpin i left in my bed! It must have fallen out while i was sleeping.";
+        purse.whateverText = "The hairpin i left in my bed! It must have fallen out while i was sleeping.";
         examine = false;
         pin = false;
       }
       else if (needle === true){
-        purse.whateverText = "A knitting needle! I don't have any yarn or the other needle to knit though. ";
+        purse.whateverText = "A knitting needle! I don't have any yarn or the other needle to knit though.";
         examine = false;
         needle = false;
       }
@@ -644,19 +683,21 @@ function inventory(){
 }
 
 function sound(){
-  if(lvl1OrLvl2 === 2 && toy.displayText === false){
-    backgroundMusicLvl2.play();
-    backgroundMusicLvl2.loop();
-    backgroundMusicLvl1.stop();
-  }
-  else if (lvl1OrLvl2 === 1 && toy.displayText === false){
-    backgroundMusicLvl1.play();
-    backgroundMusicLvl1.loop();
-    backgroundMusicLvl2.stop(); 
-  }
-  if (toy.displayText === true){
-    backgroundMusicLvl1.stop();
-    backgroundMusicLvl2.stop();
+  if(state === "game"){
+    if(lvl1OrLvl2 === 1 && toy.displayText === false){
+      backgroundMusicLvl2.play();
+      backgroundMusicLvl2.loop();
+      backgroundMusicLvl1.stop();
+    }
+    else if (lvl1OrLvl2 === 2 && toy.displayText === false){
+      backgroundMusicLvl1.play();
+      backgroundMusicLvl1.loop();
+      backgroundMusicLvl2.stop(); 
+    }
+    if (toy.displayText === true){
+      backgroundMusicLvl1.stop();
+      backgroundMusicLvl2.stop();
+    }
   }
 }
 
