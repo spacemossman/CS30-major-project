@@ -22,7 +22,7 @@ let state = "start";
 //state varible between spooky room and normal room
 let lvl1OrLvl2 = 1; 
 
-let howManTimesClicked = 0; 
+let cabinetClicked = 0; 
 
 //things you can do in the inventory
 let inventoryOpen = false;
@@ -102,7 +102,7 @@ function setup() {
   createCanvas(1600, 790);
   toy = new Objects("toy", "What a delightful tune!", "This does not sound right.", false);
   bed = new Objects("bed", "I can't sleep now; I need to find Mr. Midnight! Oh, but's there's a hairpin I can use.", "Hello Mr. Fox! Are you having a nice nap?", false);
-  cross = new Objects("cross", "Hello Mr. Fox! Are you having a nice nap?", "I don't understand. It was not who?", false);
+  cross = new Objects("cross", "I hope it dosen't fall on my head while I sleep!", "I don't understand. It was not who?", false);
   papers = new Objects("papers", "Red and tiny you are hiding from me.", "I hate the monster!", false);
   clipboard = new Objects("clipboard", "Psycho- what? I'm definitely not that for sure!", "Who did what? I'm so confused", false);
   clown = new Objects("clown", "How are you Mr. Clown?", "Where did you go Mr. Clown?", false);
@@ -245,9 +245,9 @@ class Background{
       if(mouseIsPressed && cabinetHit === true){
         this.displayOpenCabinet = true;
         cabinet.displayText = true;
-        howManTimesClicked++; 
+        cabinet.howManyTimesClicked++; 
       }
-      if(cabinet.howManTimesClicked === 2 && cabinetHit === true){
+      if(cabinet.howManyTimesClicked === 2 && cabinetHit === true){
         this.winGame = true;
       }
     }
@@ -342,7 +342,7 @@ class Objects{
       }
       else if (this.whatObject === "purse" || this.whatObject === "curtain" || this.whatObject === "cabinet" || this.whatObject === "drapes"){
         if(this.howManTimesClicked === 100){
-          this.whateverText = "Why did you click this 100 times? Why? "
+          this.whateverText = "Why did you click this 100 times? Why? ";
         }
         else if(this.howManyTimesClicked >= 2){
           this.whateverText = this.whatToSay2;
@@ -409,7 +409,7 @@ function keyPressed(){
       state = "game";
     }
   }
-  sound();
+  sound(); 
 }
 
 function isItCLicked(){
@@ -684,18 +684,11 @@ function inventory(){
 
 function sound(){
   if(state === "game"){
-    if(lvl1OrLvl2 === 1 && toy.displayText === false){
+    if (toy.displayText === false){
       backgroundMusicLvl2.play();
       backgroundMusicLvl2.loop();
-      backgroundMusicLvl1.stop();
     }
-    else if (lvl1OrLvl2 === 2 && toy.displayText === false){
-      backgroundMusicLvl1.play();
-      backgroundMusicLvl1.loop();
-      backgroundMusicLvl2.stop(); 
-    }
-    if (toy.displayText === true){
-      backgroundMusicLvl1.stop();
+    else if (toy.displayText === true){
       backgroundMusicLvl2.stop();
     }
   }
