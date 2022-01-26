@@ -18,11 +18,12 @@ let theObjects, theBackground;
 //each different class
 let toy, bed, cross, papers, clipboard, clown, cabinet, windowView, drapes, purse, curtain; 
 
+//menu screen vs game 
 let state = "start"; 
+
 //state varible between spooky room and normal room
 let lvl1OrLvl2 = 1; 
 
-let cabinetClicked = 0; 
 
 //things you can do in the inventory
 let inventoryOpen = false;
@@ -31,7 +32,6 @@ let combine  = false;
 let examine = false;
 let keyMade = false;
 
-let useWith  = " "; 
 
 //things in the inventory
 let hasPin = false;
@@ -70,7 +70,7 @@ let examineHit = false;
 
 function preload(){
   
-  //s
+  //backgrounds
   window1 = loadImage("assets/window1.png");
   window2 = loadImage("assets/window2.png");
   clipboard1 = loadImage("assets/clipboard1.png");
@@ -79,19 +79,21 @@ function preload(){
   papers2 = loadImage("assets/papers2.png");
   openCabinet = loadImage("assets/cabinetOpen.png");
 
+  //inventory images
   inventoryIMG = loadImage("assets/emptyinventory.png");
   hookInventory = loadImage("assets/inventoryOpenHook.png");
   pinAndHookInventory = loadImage("assets/hairpin.png");
   pinANdHookAndNeedleInventory = loadImage("assets/pinneedlehook.png");
   keyInventory = loadImage("assets/keyInventory.png");
 
-
+// picture of mr Midnight
   mrMidnight = loadImage("assets/mrMidnight.png");
-
+//two main backgrounds
   levelOneRoom = loadImage("assets/background1.png");
   levelTwoRoom = loadImage("assets/background2.png");
   menu = loadImage("assets/menu screen.png"); 
 
+  //sounds 
   backgroundMusicLvl1 = loadSound("assets/Dream (Ambience).mp3");
   backgroundMusicLvl2 = loadSound("assets/Finding the Truth.mp3");
   circusMusic1 = loadSound("assets/Children's March Theme.mp3");
@@ -99,7 +101,9 @@ function preload(){
 }
 
 function setup() {
+  //creating a canvas in a speific size stops the hit boxes from breaking
   createCanvas(1600, 790);
+  //each avabile object is their own sperate object, so i can avoid painful if statements
   toy = new Objects("toy", "What a delightful tune!", "This does not sound right.", false);
   bed = new Objects("bed", "I can't sleep now; I need to find Mr. Midnight! Oh, but's there's a hairpin I can use.", "Hello Mr. Fox! Are you having a nice nap?", false);
   cross = new Objects("cross", "I hope it dosen't fall on my head while I sleep!", "I don't understand. It was not who?", false);
@@ -116,6 +120,7 @@ function setup() {
 
 function draw() {
   if(state === "start"){
+    //the menu with a instructions
     image(menu, 0, 0, theBackground.y, theBackground.x);
 
     noStroke(); 
@@ -131,13 +136,15 @@ function draw() {
     text("to open the cabinet.", 635, 460);
     text("Check your inventory on the bottom left", 635, 490);  
     text("so that you can make a key.", 635, 520);
-    text("make sure to click everywhere!", 635, 550);
+    text("Make sure to click everywhere!", 635, 550);
 
   }
   else if (state === "game"){ 
 
+    //what the game needs to start
     toy.display();
   
+    //only doing descirptions for objects if the inventory isn't open 
     if(inventoryOpen === false){
       
       theBackground.display();
@@ -155,6 +162,7 @@ function draw() {
       purse.descriptions();
       curtain.descriptions();
     }
+    // if the inventory is open, do the inventroy thingd
     else if(inventoryOpen === true){
       inventory();
     }
@@ -189,6 +197,7 @@ class Background{
   constructor(){
     this.x = height;
     this.y = width;
+    //which background to display
     this.displayWindow1 = false;
     this.displayWindow2 = false;
     this.displayPapers1 = false;
@@ -201,6 +210,7 @@ class Background{
   }
 
   display(){
+    //how each background is displayed
     if(toy.clicked === false && this.displayWindow1 === false){
       image(levelOneRoom, 0, 0, this.y, this.x);
       lvl1OrLvl2 = 1;
@@ -240,7 +250,8 @@ class Background{
 
 
   isItCLickedBackgrounds(){
-
+    //the use fuction is in here
+    //becuase it switches the background
     if(use === true && combinedKey === true){
       if(mouseIsPressed && cabinetHit === true){
         this.displayOpenCabinet = true;
@@ -260,6 +271,7 @@ class Background{
       }
     }
 
+    //when things are clicked, this is how they are changed
     if(lvl1OrLvl2 === 1){
       if(windowHit === true){
         this.displayWindow1 = true;
@@ -270,6 +282,7 @@ class Background{
       else if(clipboardHit === true){
         this.displayClipboard1 = true;
       }
+      //and this is how you escape from each background
       if(eyeHit === true && 
         (this.displayWindow1 === true || this.displayPapers1 === true || this.displayClipboard1 === true)){
 
@@ -304,15 +317,18 @@ class Background{
 
 class Objects{
   constructor(whatObject, whatText1, whatText2, displayText){
+    
+    //this variable switches between the two main room 
     this.clicked = false;
-
+    //these variable sets what text is displayed
     this.whateverText = " ";
-
     this.whatObject = whatObject;
     this.whatToSay1 = whatText1;
     this.whatToSay2 = whatText2;
 
+    //and when it is displayed
     this.displayText = displayText;
+    //this helps with how many times speific objects are clicked
     this.howManyTimesClicked = 0; 
   }
 
@@ -324,6 +340,7 @@ class Objects{
   }
 
   switchRoom(){
+    //how the rooms swicthed 
     if(pillHit === true){
       this.clicked = !this.clicked;
     }
@@ -332,24 +349,31 @@ class Objects{
   
   descriptions(){
     if(this.displayText === true){
+      //this how which text is displayed
       if(lvl1OrLvl2 === 1 && 
         (this.whatObject !== "purse" && this.whatObject !== "curtain" && this.whatObject !== "cabinet" && this.whatObject !== "drapes")){
-        this.whateverText = this.whatToSay1;
+         // If the object is not a object which gives youo an object/is the cabinet, regular text is displyaed depending on which room 
+          this.whateverText = this.whatToSay1;
       }
       else if (lvl1OrLvl2 === 2 && 
         (this.whatObject !== "purse" && this.whatObject !== "curtain" && this.whatObject !== "cabinet" && this.whatObject !== "drapes")){
         this.whateverText = this.whatToSay2;
       }
       else if (this.whatObject === "purse" || this.whatObject === "curtain" || this.whatObject === "cabinet" || this.whatObject === "drapes"){
+        //this is what happend when the object is the cabinet or gives you and item 
         if(this.howManTimesClicked === 100){
+          //this is an easter egg that I'm not sure if it will work
           this.whateverText = "Why did you click this 100 times? Why? ";
         }
+        //different descirptions for if the item has been picked up already
         else if(this.howManyTimesClicked >= 2){
           this.whateverText = this.whatToSay2;
         }
+        //first descirption for when item is picked up
         else if (this.howManyTimesClicked === 1 ){
           this.whateverText = this.whatToSay1;
         }
+        //cabinet text depending wether is open, clicked again, or locked
         else if(this.whatObject === "cabinet" && theBackground.displayOpenCabinet === true){
           this.whateverText = "It's unlocked! I wonder what's inside!";
           if(this.whatObject === "cabinet" && theBackground.winGame === true){
@@ -370,6 +394,7 @@ class Objects{
 
 function getObjects(){
   if(inventoryOpen === true){
+    // How the items show up in the inventory
     image(inventoryIMG, 0, 0, theBackground.y, theBackground.x);
     if(hasHook === true){
       image(hookInventory, 0, 0, theBackground.y, theBackground.x);
@@ -389,21 +414,24 @@ function getObjects(){
 }
 
 function mousePressed(){ 
-  
+  //inventory opens with this
   if(purseHit === true){
     inventoryOpen = !inventoryOpen;
   }
 
+  //No other descirptions when the inventory
   if(inventoryOpen === false){
     isItCLicked();
   }
   
+  //how the backgrounds switch
   toy.switchRoom();
   theBackground.isItCLickedBackgrounds();
 }
 
 
 function keyPressed(){
+  //moving from the menu screen to the game
   if(state === "start"){
     if(keyCode === 13){
       state = "game";
@@ -413,7 +441,8 @@ function keyPressed(){
 }
 
 function isItCLicked(){
-  
+  //how each text is displayed and only one at time
+  //also how items get in inventory
   if(toyHit === true){
     toy.displayText = true;
 
@@ -428,6 +457,7 @@ function isItCLicked(){
     purse.displayText = false;
     curtain.displayText = false; 
 
+    //toy playing sounds
     if(lvl1OrLvl2 === 1){
       circusMusic1.play();
     }
@@ -590,17 +620,18 @@ function isItCLicked(){
 
 
 function inventory(){
-
+// the main inventory function 
   if(inventoryOpen === true){
 
+    //get objets is called 
     getObjects();
 
-
+    //use cmbine and examine hit boxes
     useHit = collidePointRect(mouseX, mouseY, 370, 600, 255, 80 ); //use
     combineHit = collidePointRect(mouseX, mouseY, 700, 600, 255, 80 ); //combine
     examineHit = collidePointRect(mouseX, mouseY, 1010, 600, 270, 80 ); //examine
 
-
+    //items hit boxes
     pinHit = collidePointRect(mouseX, mouseY, 570, 150, 140, 140 );
     hookHit = collidePointRect(mouseX, mouseY, 420, 150, 140, 140);
     needleHit = collidePointRect(mouseX, mouseY, 700, 150, 140, 140);
@@ -637,6 +668,7 @@ function inventory(){
       theBackground.isItCLickedBackgrounds();
     }
     else if (combine === true){
+      //only one combination works, the rest spawn an error
       purse.whateverText = "pick two objects to combine";
       if(needle === true && pin === true){
         keyMade = true;
@@ -660,6 +692,7 @@ function inventory(){
       }
     }
     else if (examine === true){
+      //each item has an extra description when examined
       purse.whateverText = "Pick an object to examine";
       if(hook === true){
         purse.whateverText = "The hook that fell of the drapes";
@@ -683,6 +716,7 @@ function inventory(){
 }
 
 function sound(){
+  //how the sound plays
   if(state === "game"){
     if (toy.displayText === false){
       backgroundMusicLvl2.play();
